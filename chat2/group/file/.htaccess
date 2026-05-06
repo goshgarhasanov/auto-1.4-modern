@@ -1,0 +1,14 @@
+Order Deny,Allow
+Deny from all
+
+<Files max.php> 
+Allow from all
+</Files>
+
+<Files normal.php> 
+Allow from all
+</Files>
+
+<Files *.gif> 
+Allow from all
+</Files>

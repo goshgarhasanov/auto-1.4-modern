@@ -1,0 +1,15 @@
+{% extends 'layout/base.html.twig' %}
+{% block title %}Login - chat-app{% endblock %}
+{% block content %}
+    <div class="card" style="max-width:480px;margin:2rem auto">
+        <h2 style="margin-top:0">Login</h2>
+        {% if error %}<div class="alert alert-error">{{ error }}</div>{% endif %}
+        <form class="app-form" method="post" action="/login">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+            <input type="text" name="username" placeholder="Username" required autocomplete="username">
+            <input type="password" name="password" placeholder="Password" required autocomplete="current-password">
+            <button type="submit">Login</button>
+        </form>
+        <p style="margin-top:1rem">No account? <a href="/register">Register</a>.</p>
+    </div>
+{% endblock %}

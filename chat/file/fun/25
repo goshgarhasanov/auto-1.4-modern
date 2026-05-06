@@ -1,0 +1,112 @@
+<?
+
+$key = $_GET['key'];
+
+$q = mysql_query( "SELECT * FROM `albom` WHERE `id` = '".$key."';" );
+
+if(mysql_affected_rows() == 0){
+$_v->title('&#350;ekil Tap&#305;lmad&#305;','center');
+$_v->fsize1($fsize1);
+echo "<i>$key &#350;ekil Tap&#305;lmad&#305;</i><br/>----<br/>\n";
+
+}else{
+$arr = mysql_fetch_array($q);
+$vote = $arr['vote'];
+$photo = $arr['photo'];
+$info = $arr['info'];
+$idfoto = $arr['idfoto'];
+$key = $arr['id'];
+
+$_v->title('Fikirler','left');
+$_v->fsize1($fsize1);
+
+
+echo "<img src=\"./photos/{$idfoto}/{$photo}\" alt=\".\"/><br/>\n";
+
+
+if($_GET['del']!= "" && ( $idfoto == $id || $row['level'] == 9 ) ){
+mysql_query("delete from `albom_fikir` WHERE `id` = '".$_GET['del']."';");
+
+$al_comment = mysql_query( "SELECT * FROM `albom_fikir` WHERE `key` = '".$key."';" );
+$all_comment = mysql_num_rows($al_comment);
+
+mysql_query( "update albom set comment ='".$all_comment."' where id = '".$key."';" );
+}
+
+if(3<=strlen($info)){
+echo "<b>Qeyd</b>: {$info}<br/>\n";
+}
+
+$_v->divide();
+
+
+if (2<=strlen($_POST['message'])){
+
+if ($row['posts'] < 100) {
+echo "<u>100 Postdan yuxar&#305; &#351;ekile &#351;erh yaza biler.</u><br/>";
+}else{
+
+$message = $_POST['message'];
+$message = in_smile(narmobil($message));
+
+
+      $rx = mysql_query("SELECT `message` FROM `albom_fikir` WHERE `usid` = '".$id."' order by `id` desc LIMIT 1;");
+      $ax = mysql_fetch_array($rx);
+      if ($ax["message"] !== $message)
+      {
+mysql_query( "Insert into `albom_fikir` set `usid` ='".$id."', `user` ='".$row['user']."', `message` ='".$message."', `time` ='".$SERVER_TIME."', `key` ='".$key."';" );
+mysql_query( "update `albom` set `comment` = `comment`+'1' where `id` = '".$key."';" );
+}
+
+}
+}
+
+
+$q = mysql_query( "SELECT * FROM `albom_fikir` WHERE `key` = '".$key."';" );
+$all = mysql_num_rows( $q );
+
+$next_id = next_id($all);
+
+$q = mysql_query( "SELECT * FROM `albom_fikir` WHERE `key` = '".$key."' ORDER BY `id` DESC LIMIT $next_id[start],$next_id[max_page];;" );
+if ( $all == 0 ){
+echo "<i>Bu &#350;ekile fikir bildiren olmay&#305;b</i>.<br/>";
+}else{
+echo "<b>&#304;stifade&#231;i Fikirleri...</b><br/>\n";
+$_v->divide();
+if ( $error != "" ){
+echo $error;
+echo $divide;
+}
+
+while ($inf = mysql_fetch_array($q)){
+$eid = $inf['id'];
+$usid = $inf['usid'];
+$u_user = $inf['user'];
+$message = $inf['message'];
+echo "<a href=\"info.php?id={$id}&amp;ps={$ps}&amp;nk={$usid}{$takep}\">{$u_user}</a>&#187; {$message}\n";
+if ( $idfoto == $id ){
+echo "[<a href=\"img_a.php?bol=4&amp;id={$id}&amp;ps={$ps}&amp;mov={$mov}&amp;key={$key}&amp;del={$eid}{$takep}\">x</a>]\n";
+}else if ( $row['level'] == 9 ){
+echo "[<a href=\"img_a.php?bol=4&amp;id={$id}&amp;ps={$ps}&amp;mov={$mov}&amp;key={$key}&amp;del={$eid}{$takep}\">x</a>]\n";
+}
+echo "<br/>\n";
+}
+
+
+if($next_id['a'] > $next_id['max_page'])
+{
+echo page_next("img_a.php?bol=4&amp;id={$id}&amp;ps={$ps}&amp;mov={$mov}&amp;key={$key}{$takep}", $next_id['a'], $next_id['max_page'], $next_id['page']);
+}
+
+
+}
+
+$_v->divide();
+$_v->action("img_a.php?bol=4&amp;id={$id}&amp;ps={$ps}&amp;mov={$mov}&amp;key={$key}{$takep}");
+$_v->input("<input name=\"message{$ref}\" maxlength=\"600\" title=\"message\"/><br/>\n");
+$_v->submit('Fikir Yaz');
+$_v->divide();
+echo "<a href=\"img_a.php?id={$id}&amp;ps={$ps}&amp;mov={$mov}&amp;img={$idfoto}{$takep}\">Geri Qay&#305;t</a><br/>\n";
+}
+
+?>

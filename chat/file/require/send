@@ -1,0 +1,110 @@
+<?
+if(strlen($_POST['message'])< 2){
+echo "Yazd&#305;&#287;&#305;n&#305;z mesaj 2 simvoldan &#231;ox olmal&#305;d&#305;r.<br/>\n";
+echo $divide;
+}elseif($id==$nk){
+echo "&#214;z-&#246;z&#252;n&#252;ze yaz&#305;b post art&#305;rmaq niyyetiniz varsa buna deymez &#231;&#252;nki Sistem bir nece defe flood etdiyinizi tutsa, postlar&#305;n&#305;z&#305; cerime edib Sizide &#199;atdan xaric edecek...<br/>\n";
+echo $divide;
+}elseif($row["inv"]!=2){
+$nk = mysql_escape_string($nk);
+$zc = mysql_query ("select `id`,`user`,`mesaj` from `users` where `id` = '".$nk."';");
+if (mysql_affected_rows() <= 0) {
+echo "Mesaj yazmaq istediyiniz istifade&#231;i m&#246;vcut deyil...<br/>";
+echo $divide;
+echo "<a href=\"on.php?id=$id&amp;ps=$ps&amp;ref=$ref\">Online Mesaj</a><br/>\n";
+$_v->fsize2($fsize2);
+$_v->end('1',$link);
+exit;
+}
+$a = mysql_fetch_array($zc);
+$login=$a["user"];
+$usid=$a["id"];
+$mesaj=$a["mesaj"];
+
+if ($row['level']<9)
+{
+	if ($mesaj==1) {
+		mysql_query ("Select * from `friends` where `usid`='".$id."' and `id`='".$usid."';");
+		if (mysql_affected_rows() != true)
+		{
+			echo "<u>Bu istifade&#231;i Yaln&#305;z dostlar&#305;ndan mesaj qebul edir.</u><br/>----<br/>";
+			echo "<a href=\"on.php?id=$id&amp;ps=$ps&amp;ref=$ref\">Online Mesaj</a><br/>\n";
+			$_v->fsize2($fsize2);
+			$_v->end('1',$link);
+		exit;
+		}
+	}
+	elseif ($mesaj==2)
+	{
+		echo "<u>Bu istifade&#231;i mesaj qebul etmir.</u><br/>----<br/>";
+		echo "<a href=\"on.php?id=$id&amp;ps=$ps&amp;ref=$ref\">Online Mesaj</a><br/>\n";
+		$_v->fsize2($fsize2);
+		$_v->end('1',$link);
+	exit;
+	}
+}
+
+@mysql_query ("Select * from `ignor` where `usid`='".$id."' and `id`='".$usid."';");
+if (mysql_affected_rows() == true){
+echo "<b>".$login."</b> <i>Sizi ignor edib</i>.<br/>Bu o demekdir ki, o sizinle dan&#305;&#351;maq istemir!<br/>\n";
+echo $divide;
+}else{
+
+$message = narmobil($message);
+if ($row["smiles"]==2)
+$message = in_smile($message,$row['posts']);
+$mssg=strtolower($message);
+if ($row['level']<7)
+require("file/require/reklam");
+else {
+$message = eregi_replace("((http://))((([a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z;]{2,3}))|(([0-9]{1,3}\.){3}([0-9]{1,3})))((/|\?)[a-z0-9~#%&'_\+=:;\?\.-]*)*)", "<a href=\"\\0\">\\3</a>", $message); 
+if ((eregi('&lt;a ', $message)) and (eregi('/&gt;', $message)) and (eregi('&lt;/a&gt;', $message))){ 
+$message = str_replace("&lt;a ", "<a ", $message);
+$message = str_replace("/&gt;", "/>", $message);
+$message = str_replace("&lt;/a&gt;", "</a>", $message);
+}
+}
+
+$cc = mysql_query("SELECT `message` FROM `mesaj` WHERE (`idwho` ='".$id."')and(`idtowhom` = '".$usid."') order by `time` desc LIMIT 1;");
+$fx = mysql_fetch_array($cc);
+if ($fx["message"]!== $message){
+if ((strlen($mssg) != strlen($message))&&($row["level"]<7))
+{
+@mysql_query ("Select * from `reklam` where `idwho`='".$id."' and `message`='".$message."';");
+if (mysql_affected_rows() == 0) {
+mysql_query("Insert into `reklam` set `who` ='".$user."', `idwho` ='".$id."', `message` = '".$message."', `towhom` = '$login', `idtowhom` = '".$usid."', `time` = '".$SERVER_TIME."';");
+}
+}else{
+if(rand(1,3)==1){
+$posts = $row["posts"];
+$ataka_time = $SERVER_TIME-40;
+$ataka = mysql_query("select COUNT(`klu4`) from `mesaj` where `idwho` = '".$id."' and `time` >'".$ataka_time."';");
+$ataka_sms = @mysql_result($ataka, 0);
+if($ataka_sms>=6){
+$ftime = $SERVER_TIME + 1200;
+$cpost = $posts*10/100;
+$cposts = $posts-$cpost;
+settype($cpost, 'integer');
+mysql_query("update `users` set `kik` = '".$ftime."', `time` = '".$SERVER_TIME."', `posts` = '".$cposts."', `whykik` = 'Online Mesaj-da flood  + $cpost post cerime', `whokik` = 'Sistem', `banned` = '5' WHERE `id` = '".$id."';");
+}
+}
+mysql_query("insert into `mesaj` set  `who`='$user', `idwho`='$id', `message`='$message', `towhom`='$login', `idtowhom`='$usid', `time`='".$SERVER_TIME."', `posts`='".$row['posts']."';");
+$row['action'] = action_up($row['action'] + '0.02');
+mysql_query ("Update `users` set `posts`='1'+`posts`, `nnposts`='1'+`nnposts`, `action`='".$row['action']."' where `id` ='".$id."'");
+mysql_query ("Update `users` set `msn`='1'+`msn` where `id` ='".$usid."';");
+mysql_query ("Update `users` set `sms`= '1' where `id` ='".$usid."';");
+
+  require("bot.php");
+
+
+
+}
+}
+}
+}
+else
+{
+echo "Sizin Mesaj g&#246;nderilmedi! Sebeb Siz iqnor edilibsiz...<br/>\n";
+echo $divide;
+}
+?>

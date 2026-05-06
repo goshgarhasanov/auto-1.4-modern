@@ -1,0 +1,56 @@
+<?php
+
+$requ = $row['requ'];
+
+if($l == "0") {
+mysql_query("Update `users` set `requ`='time' where `id` ='".$id."';");
+$requ = "time";
+} else if($l == "1") {
+mysql_query("Update `users` set `requ`='xal' where `id` ='".$id."';");
+$requ = "xal";
+}
+
+$bilis = $row['onsex'];
+
+if ($c == "0") {
+$bilis = 0;
+mysql_query( "Update `users` set  `onsex`='0' where `id` ='".$id."';" );
+} else if ($c == "1") {
+$bilis = 1;
+mysql_query( "Update `users` set `onsex`='1' where `id` ='".$id."';" );
+} else if ($c == "2") {
+$bilis = "3";
+mysql_query( "Update `users` set `onsex`='3' where `id`='".$id."';" );
+}
+
+if ($id != 1) {
+$gizli = "AND inv != '3'";
+} else {
+$gizli = "";
+}
+
+$tm = time();
+$usersj=mysql_fetch_array(mysql_query("SELECT COUNT(id) FROM users where sex='1' and time> '".time()."' ".$gizli.""));
+$usersm=mysql_fetch_array(mysql_query("SELECT COUNT(id) FROM users where sex='0' and time> '".time()."' ".$gizli.""));
+$cemi = $usersm[0] + $usersj[0];
+$muenn = "";
+
+if ($bilis == "0") {
+$onu = $usersm[0];
+$muenn = "and `sex` = '0'";
+} else if ($bilis == "1") {
+$onu = $usersj[0];
+$muenn = "and `sex` = '1'";
+} else {
+$onu = $usersm[0] + $usersj[0];
+}
+
+if($requ=="xal"){
+$savik = 'ORDER BY `xal` DESC, `time` DESC';
+} else {
+$savik = 'ORDER BY `time` DESC';
+}
+
+$tm = time()-$vaxt;
+
+?>

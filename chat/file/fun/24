@@ -1,0 +1,235 @@
+<?php
+
+$bals = file( "file/bal_bot/0.dat" );
+$nikduzelt = trim( $bals[24] );
+$b_user = trim( $bals[0] );
+$user_bot = trim( $bals[1] );
+unset( $bals );
+if ( $nikduzelt == "x" )
+{
+echo "<card id=\"xeta\" title=\"Xeta\">\n";
+echo "<p>\n";
+echo $fsize1;
+echo "Bele xidmet yoxdur<br/>\n";
+echo $divide;
+if ( $bolme )
+{
+print "<a href=\"hesab.php?id={$id}&amp;ps={$ps}&amp;ref={$ref}\">Bal Xidmetleri</a><br/>";
+}
+print "<a href=\"enter.php?id={$id}&amp;ps={$ps}&amp;ref={$ref}\">Dehliz</a><br/>";
+echo $fsize2;
+echo "</p></card></wml>";
+ob_end_flush( );
+exit( );
+}
+if ( file_exists( "i/".$id.".gif" ) )
+{
+$adminnick = mysql_query( "SELECT * FROM `c_nick` WHERE `to` = '".$id."';" );
+if ( mysql_affected_rows( ) != 0 )
+{
+echo "<card id=\"nick\" title=\"Diqqet\">\n";
+echo "<p>\n";
+echo $fsize1;
+$colornick = @mysql_fetch_array( $adminnick );
+$time = $colornick['time'];
+$tkick = $time - time( );
+if ( $tkick < 60 && 0 < $tkick )
+{
+$vaxt = "saniyye\n";
+}
+else if ( $tkick < 3600 && 60 < $tkick )
+{
+$new = $tkick;
+$tkick = $new / 60;
+$vaxt = "deqiqe\n";
+}
+else if ( $tkick < 86400 && 3600 < $tkick )
+{
+$new = $tkick;
+$tkick = $new / 3600;
+$vaxt = "saat\n";
+}
+else if ( 86400 < $tkick )
+{
+$new = $tkick;
+$tkick = $new / 86400;
+$vaxt = "g&#252;n\n";
+}
+$tkick = round( $tkick );
+echo "<u>Rengli nickiniz var ve aktivdir</u>:<br/>Nickin g&#246;r&#252;nt&#252;s&#252;: <img src=\"i/{$id}.gif\" alt=\"{$user}\" /><br/>";
+echo "<i>Nickin vaxt&#305;n&#305;n tamam olmas&#305;na <b>{$tkick} {$vaxt}</b> qal&#305;b</i>...<br/>\n";
+echo $divide;
+echo "Rengli nikinizin vaxti bitdikden sonra bu xidmetden istifade ede bilersiz.<br/>";
+echo "----<br/>\n";
+if ( $bolme )
+{
+print "<a href=\"hesab.php?id={$id}&amp;ps={$ps}&amp;ref={$ref}\">Bal Xidmetleri</a><br/>\n";
+}
+print "<a href=\"enter.php?id={$id}&amp;ps={$ps}&amp;ref={$ref}\">Dehliz</a><br/>\n";
+echo $fsize2;
+echo "</p></card></wml>";
+ob_end_flush( );
+exit( );
+}
+}
+echo "<card id=\"balx\" title=\"Rengli Nik D&#252;zelt\">\n";
+echo "<p>\n";
+if ( !isset( $_POST['rn_a'] ) )
+{
+echo $fsize1;
+$q = mysql_query( "select `saat`,`tarix` from `hesab` where `usid` = '{$id}' and `x` = '9' ;" );
+if ( mysql_affected_rows( ) != 0 )
+{
+$arr = mysql_fetch_array( $q );
+$saat = $arr['saat'];
+$tarix = $arr['tarix'];
+$tkick = $saat - time( );
+if ( $tkick < 60 && 0 < $tkick )
+{
+$vaxt = "saniyye";
+}
+else if ( $tkick < 3600 && 60 < $tkick )
+{
+$new = $tkick;
+$tkick = $new / 60;
+$vaxt = "deqiqe";
+}
+else if ( $tkick < 86400 && 3600 < $tkick )
+{
+$new = $tkick;
+$tkick = $new / 3600;
+$vaxt = "saat";
+}
+else if ( 86400 < $tkick )
+{
+$new = $tkick;
+$tkick = $new / 86400;
+$vaxt = "g&#252;n";
+}
+$tkick = round( $tkick );
+if ( $tarix == 1 )
+{
+echo "Siz funksiyan&#305; aktiv etmisiniz ve \"<u>{$tkick} {$vaxt} erzinde</u>\" &#304;stediyiniz zaman &#246;z&#252;n&#252;ze rengli nik d&#252;zelde ve deaktiv ede bilersiz buna g&#246;re hesab&#305;n&#305;zdan bal &#231;&#305;x&#305;lmayacaq.<br/>\n";
+echo "Hal-haz&#305;rda Rengli nickiniz aktivdir.\n";
+echo "<img src=\"i/{$id}.gif?{$ref}\" alt=\"G&#246;r&#252;nt&#252;\"/><br/>\n";
+echo $divide;
+}
+else
+{
+echo "Rengli nik funksiyan&#305;z Deaktivdir aktivle&#351;dirmek &#252;&#231;&#252; balans&#305;n&#305;zdan bal c&#305;x&#305;lmayacaq.<br/>\n";
+echo "\"<u>{$tkick} {$vaxt}</u>\" erzinde bu xidmetden bals&#305;z istifade ede bilersiz.<br/>\n";
+echo $divide;
+echo "Rengli nik funksiyas&#305;n&#305; Aktiv etdikde \"<b>{$nikduzelt} bal</b>\" balans&#305;n&#305;zdan &#231;&#305;x&#305;l&#305;r.<br/>\n";
+echo "Daha sonra \"<b>30 g&#252;n</b>\" erzinde limitsiz olaraq rengli nik d&#252;zelde, rengini deyi&#351;e ve  Aktiv - Deaktiv ede bilirsiniz.<br/>****<br/>\n";
+}
+}
+else if ( $bal < $nikduzelt )
+{
+print "Sizin hesab&#305;n&#305;zda (<b>{$bal}</b>) bal var ve bu xidmetden istifade etmek &#252;&#231;&#252;n yeterli deyil.<br/>\n";
+echo "<a href=\"hesab.php?bolme=bal&amp;id={$id}&amp;ps={$ps}&amp;ref={$ref}\">Bal Y&#252;kleme Qaydas&#305;</a><br/>\n";
+echo $divide;
+}
+echo $fsize2;
+echo $fsize1;
+echo "Fonun rengi\n";
+echo $fsize2;
+echo "<select name=\"font_color{$ref}\" value=\"17\">\r\n<option value=\"01\">A&#287;</option>\r\n<option value=\"02\">Cehray&#305;</option>\r\n<option value=\"03\">Q&#305;rm&#305;z&#305;</option>\r\n<option value=\"04\">Sar&#305;</option>\r\n<option value=\"05\">Nar&#305;nc&#305;</option>\r\n<option value=\"06\">A&#231;&#305;q Mavi</option>\r\n<option value=\"07\">T&#252;nd Mavi</option>\r\n<option value=\"08\">Ben&#246;v&#351;eyi</option>\r\n<option value=\"09\">Ac&#305;q g&#246;y</option>\r\n<option value=\"10\">T&#252;nd g&#246;y</option>\r\n<option value=\"11\">A&#231;&#305;q ya&#351;&#305;l</option>\r\n<option value=\"12\">T&#252;nd ya&#351;&#305;l</option>\r\n<option value=\"13\">Qehveyi</option>\r\n<option value=\"14\">Boz (75%)</option>\r\n<option value=\"15\">Boz (50%)</option>\r\n<option value=\"16\">Boz (25%)</option>\r\n<option value=\"17\">Qara</option>\r\n</select><br/>";
+echo $fsize1;
+echo "Herflerin rengi\n";
+echo $fsize2;
+echo "<select name=\"text_color{$ref}\" value=\"01\">\r\n<option value=\"01\">A&#287;</option>\r\n<option value=\"02\">Cehray&#305;</option>\r\n<option value=\"03\">Q&#305;rm&#305;z&#305;</option>\r\n<option value=\"04\">Sar&#305;</option>\r\n<option value=\"05\">Nar&#305;nc&#305;</option>\r\n<option value=\"06\">A&#231;&#305;q Mavi</option>\r\n<option value=\"07\">T&#252;nd Mavi</option>\r\n<option value=\"08\">Ben&#246;v&#351;eyi</option>\r\n<option value=\"09\">A&#231;&#305;q g&#246;y</option>\r\n<option value=\"10\">T&#252;nd g&#246;y</option>\r\n<option value=\"11\">A&#231;&#305;q ya&#351;&#305;l</option>\r\n<option value=\"12\">T&#252;nd ya&#351;&#305;l</option>\r\n<option value=\"13\">Qehveyi</option>\r\n<option value=\"14\">Boz (75%)</option>\r\n<option value=\"15\">Boz (50%)</option>\r\n<option value=\"16\">Boz (25%)</option>\r\n<option value=\"17\">Qara</option>\r\n</select><br/>";
+echo $fsize1;
+echo "Aktivlik:<br/>\n";
+echo $fsize2;
+echo "<select name=\"rn_a{$ref}\" value=\"1\">\r\n<option value=\"0\">Deaktiv et</option>\r\n<option value=\"1\">Aktiv et</option>\r\n</select><br/>\n";
+echo $fsize1;
+echo "<anchor>[Ok]<go href=\"hesab.php?bolme=24&amp;id={$id}&amp;ps={$ps}&amp;ref={$ref}\" method=\"post\">\r\n<postfield name=\"font_color\" value=\"\$(font_color{$ref})\"/>\r\n<postfield name=\"text_color\" value=\"\$(text_color{$ref})\"/>\r\n<postfield name=\"rn_a\" value=\"\$(rn_a{$ref})\"/>\r\n</go></anchor><br/>\n";
+echo $divide;
+echo $fsize2;
+}
+else
+{
+$q = mysql_query( "select `tarix` from `hesab` where `usid` = '{$id}' and `x` = '9' ;" );
+if ( mysql_affected_rows( ) != 0 )
+{
+$arr = mysql_fetch_array( $q );
+$tarix = $arr['tarix'];
+}
+$font_color = $_POST['font_color'];
+$text_color = $_POST['text_color'];
+$rn_a = $_POST['rn_a'];
+$ccc_time_new = time( ) + 2592000;
+$error = "";
+if ( $bal < $nikduzelt && $tarix == "" )
+{
+echo $fsize1;
+echo "Rengli nik d&#252;zeltmek &#252;&#231;&#252;n Hesab&#305;n&#305;zda  \"<b>{$nikduzelt}</b>\" bal olmal&#305;d&#305;r.<br/>\n";
+echo "Sizin Hesab&#305;n&#305;zda \"<b>{$bal}</b>\" bal var<br/>\n";
+echo $divide;
+echo "<a href=\"hesab.php?bolme=bal&amp;id={$id}&amp;ps={$ps}&amp;ref={$ref}\">Bal Y&#252;kleme Qaydas&#305;</a><br/>\n";
+echo $divide;
+echo $fsize2;
+}
+else
+{
+if ( $tarix == "" )
+{
+$newbal = $bal - $nikduzelt;
+mysql_query( "UPDATE `users` SET `bal` = '".$newbal."' WHERE `id` = '".$id."';" );
+$saat = 2592000 + time( );
+mysql_query( "insert into `hesab` values(0,'{$user}','{$id}','{$rn_a}','{$saat}','9');" );
+$data = date( "d.m.y [H:i]", mktime( date( "H" ) + $xsat ) );
+$save = fopen( "file/bal_bot/18.dat", "a+" );
+$qeyd = "".base64_encode( "<b>{$user}</b>: (<u>{$bal}-{$nikduzelt}=<b>{$newbal}</b></u>) Tarix: {$data}" )."\n";
+@fwrite( $save, "{$qeyd}" );
+@fflush( $save );
+@fclose( $save );
+unset( $save );
+$xerc = @mysql_query( "Select `xerc` from `setting` where `klu4` = '1';" );
+$mp = mysql_fetch_array( $xerc );
+$satish = $mp['xerc'];
+$satish = $satish + $nikduzelt;
+mysql_query( "UPDATE `setting` SET `xerc` = '".$satish."' where `acar` = '1';" );
+$time = time( ) + $vaxt;
+$message = "<b>{$user}</b> - Rengli nik d&#252;zeltme Sisteminden istifade etdi. {$bal} - {$nikduzelt} = {$newbal} bal qald&#305;.<br/> Bankda <b>{$satish}</b> bal var...";
+mysql_query( "insert into `zapiski` values(0,'".$b_user."','0','".$message."','','1','".$time."','0','Rengli nik d&#252;zeltme','".$data."','1','1');" );
+$istifadeci = "H&#246;rmetli <b>{$user}</b>. Siz Rengli nik d&#252;zeltme Sisteminden istifade etdiniz. Siz 1 ay m&#252;ddetinde istediyiniz qeder nikinizin rengini deyi&#351;e bilersiniz hem&#231;ini istediyiniz vaxt rengli nikinizi deaktiv ve ya aktiv ede bilersiz.<br/> Hesab&#305;n&#305;zda {$bal} - {$nikduzelt} = {$newbal} bal qald&#305;.";
+mysql_query( "insert into `zapiski` values(0,'".$user_bot."','0','".$istifadeci."','".$user."','".$id."','".$time."','0','Melumat','".$data."','1','1');" );
+echo $fsize1."<i>Tebrikler 1 ayl&#305;q sistemden istifade haqq&#305;n&#305;z var.</i><br/>\n".$divide.$fsize2;
+}
+else
+{
+mysql_query( "UPDATE `hesab` SET `tarix` = '".$rn_a."' WHERE `usid` = '".$id."' and `x` = '9';" );
+}
+if ( $rn_a == 1 )
+{
+$file = "http://{$thesite}/chat/color.php?id=".$id."&font={$font_color}&color={$text_color}";
+$newfile = "i/".$id.".gif";
+@unlink( $newfile );
+if ( copy( $file, $newfile ) )
+{
+echo "<img src=\"color.php?id=".$id."&amp;font={$font_color}&amp;color={$text_color}\" alt=\"Rengli nick\"/><br/>\n";
+echo $fsize1;
+echo "Rengli nickiniz aktiv olundu.<br/>\n";
+echo $divide;
+echo $fsize2;
+}
+else
+{
+echo $fsize1."\n Xeta ba&#351; verdi tekrar yoxlay&#305;n yene xeta ba&#351; vererse Rehberliye m&#252;raciet edin.<br/>\n".$fsize2;
+}
+}
+else
+{
+echo $fsize1;
+echo "Rengli nickiniz deaktiv olundu.<br/>\n";
+echo $divide;
+echo $fsize2;
+@unlink( "i/".$id.".gif" );
+}
+echo $fsize1;
+print "<a href=\"hesab.php?bolme=24&amp;id={$id}&amp;ps={$ps}&amp;ref={$ref}\">Geri Qay&#305;t</a><br/>\n";
+echo $fsize2;
+}
+}
+?>

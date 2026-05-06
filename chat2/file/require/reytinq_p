@@ -1,0 +1,107 @@
+<?php
+$fp = file( "file/dat_folder/reytinq.dat" );
+$reytinq = trim( $fp[0] );
+$test1 = trim( $fp[1] );
+$datgun = trim( $fp[2] );
+echo $fsize1;
+echo "<b>Reytinq Panel</b><br/>\n";
+echo $divide;
+if ( !isset( $_POST['r_p'] ) )
+{
+echo "Avtomatik Yenilensin (G&#252;n):<br/>\n";
+echo $fsize2;
+echo "<input size=\"2\" name=\"gun{$ref}\" value=\"{$datgun}\" title=\"Yenilenme m&#252;ddeti\"/><br/>\n";
+echo $fsize1;
+echo "Reytinqin Veziyyeti:<br/>\n";
+echo $fsize2;
+echo "<select name=\"r_p{$ref}\">\n";
+if ( $reytinq == 0 )
+{
+echo "<option value=\"0\">Aktiv A&#231;q </option>\n";
+echo "<option value=\"1\">Sesverme STOP</option>\n";
+echo "<option value=\"2\">Reytinq STOP </option>\n";
+}
+else if ( $reytinq == 1 )
+{
+echo "<option value=\"1\">Sesverme STOP </option>\n";
+echo "<option value=\"0\">Aktiv A&#231;q </option>\n";
+echo "<option value=\"2\">Reytinq STOP </option>\n";
+}
+else
+{
+echo "<option value=\"2\">Reytinq STOP </option>\n";
+echo "<option value=\"1\">Sesverme STOP </option>\n";
+echo "<option value=\"0\">Aktiv A&#231;q </option>\n";
+}
+echo "</select><br/>\n";
+echo $fsize1;
+echo "<anchor>Deyi&#351;dir<go href=\"admin.php?go=r_p&amp;id={$id}&amp;ps={$ps}&amp;ref={$ref}\" method=\"post\">\n";
+echo "<postfield name=\"gun\" value=\"\$(gun{$ref})\"/>\n";
+echo "<postfield name=\"r_p\" value=\"\$(r_p{$ref})\"/>\n";
+echo "</go></anchor><br/>\n";
+echo $divide;
+echo "<anchor>Reytinqi Temizle<go href=\"admin.php?go=r_p&amp;id={$id}&amp;ps={$ps}&amp;ref={$ref}\" method=\"post\">\n";
+echo "<postfield name=\"r_p\" value=\"del\"/>\n";
+echo "</go></anchor><br/>\n";
+echo $fsize2;
+}
+else if ( $_POST['r_p'] == "del" )
+{
+$dat = file( "file/dat_folder/enter.dat" );
+$test1 = trim( $dat[0] );
+$test2 = trim( $dat[1] );
+$test3 = trim( $dat[2] );
+$test7 = trim( $dat[6] );
+$test8 = trim( $dat[7] );
+$test9 = trim( $dat[8] );
+$test10 = trim( $dat[9] );
+$test11 = trim( $dat[10] );
+$test12 = trim( $dat[11] );
+$file = fopen( "file/dat_folder/enter.dat", "w" );
+$data = "{$test1}\n";
+$data .= "{$test2}\n";
+$data .= "{$test3}\n";
+$data .= "\n";
+$data .= "\n";
+$data .= "\n";
+$data .= "{$test7}\n";
+$data .= "{$test8}\n";
+$data .= "{$test9}\n";
+$data .= "{$test10}\n";
+$data .= "{$test11}\n";
+$data .= "{$test12}";
+fwrite( $file, $data );
+fclose( $file );
+$reytime = 86400 * $datgun + time( );
+$file = fopen( "file/dat_folder/reytinq.dat", "w" );
+$data = "{$reytinq}\n";
+$data .= "{$reytime}\n";
+$data .= "{$datgun}";
+fwrite( $file, $data );
+fclose( $file );
+mysql_query( "delete from reytinq" );
+mysql_query( "Update users set ses='0' where ses!='0'" );
+echo "<u>Reytinq Temizlendi</u><br/>\n";
+echo $divide;
+echo "<a href=\"admin.php?go=r_p&amp;id={$id}&amp;ps={$ps}&amp;ref={$ref}\">Geri Qay&#305;t</a><br/>\n";
+echo $fsize2;
+}
+else
+{
+$newregtime = 86400 * $gun + time( );
+if ( $newregtime < $test1 )
+{
+$test1 = $newregtime;
+}
+$file = fopen( "file/dat_folder/reytinq.dat", "w" );
+$data = "{$r_p}\n";
+$data .= "{$test1}\n";
+$data .= "{$gun}";
+fwrite( $file, $data );
+fclose( $file );
+echo "<u>Reytinq Yenilendi</u><br/>\n";
+echo $divide;
+echo "<a href=\"admin.php?go=r_p&amp;id={$id}&amp;ps={$ps}&amp;ref={$ref}\">Geri Qay&#305;t</a><br/>\n";
+echo $fsize2;
+}
+?>

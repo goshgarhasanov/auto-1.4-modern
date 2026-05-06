@@ -1,0 +1,33 @@
+<?php
+echo $divide;
+mysql_query ("Select * from mduel where (dkim='".$id."' or dkimle ='".$id."') and (devet = '2') and (dtime > '".time()."')");
+if (mysql_affected_rows()!=0) {
+echo "Siz hal-haz&#305;rda dueldesiz<br/>";
+} else {
+mysql_query ("Select * from mduel where (dkim='".$nk."' or dkimle ='".$nk."') and (devet = '2') and (dtime > '".time()."')");
+if (mysql_affected_rows()!=0) {
+echo "Bu istifade&#231;i hal-haz&#305;rda dueldedir<br/>";
+} else {
+mysql_query ("Select * from mduel where (dkim='".$id."' ) and (dkimle='".$nk."') and (devet = '1')");
+if (mysql_affected_rows()!=0){
+echo "Siz art&#305;q devet g&#246;ndermisiniz...<br/>";
+} else {
+mysql_query ("Select * from mduel where (dkim='".$nk."' ) and (dkimle='".$id."') and (devet = '1')");
+if (mysql_affected_rows()!=0){
+echo "Size art&#305;q devet g&#246;nderib...<br/>";
+} else {
+echo "Duele <a href=\"mduel.php?moko=devet&amp;id=$id&amp;ps=$ps&amp;nk=$nk&amp;r=$ref\">Devet et</a><br/>";
+}
+}
+}
+}
+$path = "mduel/arxiv/$nk/";
+if ( is_dir( $path ) ) {
+$list = glob($path.'*');
+$all = sizeof($list);
+$ma = base64_encode($path);
+if ( $all > '0' ) { 
+echo "Cemi: <a href=\"mduel.php?moko=dueller&amp;id=$id&amp;ps=$ps&amp;nk=$nk&amp;ma=$ma&amp;r=$ref\">$all</a> duelde i&#351;tirak edib<br/>";
+}
+}
+?>

@@ -1,0 +1,111 @@
+<?php
+Error_Reporting(E_ALL & ~E_NOTICE);
+define('yccost','localhost');
+define('yccser','doydum_chat');
+define('yccass','doysanimsan');
+define('yccame','doydum_chat');
+$site = "wap.DoYSaN.NeT";
+$vaxt = "9999999"; // online vaxt
+
+$HTTP_USER_AGENT = htmlentities(addslashes($_SERVER["HTTP_USER_AGENT"]));
+$REMOTE_ADDR = htmlentities(addslashes($_SERVER["REMOTE_ADDR"]));
+
+$divide = "----<br/>";
+
+$SQLlink = "";
+$dtd = '<!DOCTYPE wml PUBLIC "-//WAPFORUM//DTD WML 1.2//EN" "http://www.wapforum.org/DTD/wml12.dtd">';
+$xml = '<?xml version="1.0" encoding="UTF-8"?>';
+
+
+function connect_db() {
+$SQLlink = @mysql_connect (yccost, yccser, yccass);
+if($SQLlink) {
+if(@mysql_select_db(yccame)){
+return $SQLlink;
+} else {
+$yenile = $_SERVER['HTTP_HOST'];
+$yenile .= $_SERVER['REQUEST_URI'];
+$yenile = str_replace("&", "&amp;", $yenile);//CH
+
+echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+echo "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n";
+echo "<html><center><head>\n";
+echo "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/>\n";
+echo "<title>MySql DataBase</title>\n";
+echo "<style type=\"text/css\">
+body { font-weight: normal; font-size: normal; font-family: white; color: #ff6699; background-color: #000000 }
+a:link,a:active,a:visited { text-decoration: underline; color : #ffff00 }
+div { margin: 1px 0px 1px 0px; padding: 4px 4px 4px 4px }
+div.form { background-color: #00ff00 }
+</style></head><body>";
+echo "*****<br/>\n";
+echo "<b>MySql</b> Baza ile Elaqe Yaranm&#305;r. Sayt Heddinden &#199;ox Y&#252;klenib...<br/>----<br/>";
+echo "<i>Zehmet olmasa biraz g&#246;zleyin...</i> <br/>*****<br/>";
+echo "<a href=\"http://$yenile\">Yenile</a><br/>\n";
+echo "<a href=\"license.php\">Script License</a><br/>\n";
+echo "</body></center></html>";
+}
+}
+else
+{
+$yenile = $_SERVER['HTTP_HOST'];
+$yenile .= $_SERVER['REQUEST_URI'];
+$yenile = str_replace("&", "&amp;", $yenile);//CH
+
+echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+echo "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n";
+echo "<html><head>\n";
+echo "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/>\n";
+echo "<title>MySql Not</title>\n";
+echo "<style type=\"text/css\">
+body { font-weight: normal; font-size: normal; font-family: white; color: #ff6699; background-color: #000000 }
+a:link,a:active,a:visited { text-decoration: underline; color : #ffff00 }
+div { margin: 1px 0px 1px 0px; padding: 4px 4px 4px 4px }
+div.form { background-color: #00ff00 }
+</style></head><body>";
+echo "<center>*****<br/>\n";
+echo "<b>MySql</b> Baza Yarad&#305;lmay&#305;b...";
+echo "<br/>*****<br/></center>";
+echo "<a href=\"http://$yenile\">Yenile</a><br/>\n";
+echo "<a href=\"license.php\">Script License</a><br/>\n";
+echo "</body></html>";
+}
+exit;
+}
+
+function check_login($link) {
+global $id, $ps, $ref;
+$ref = rand(10000, 1000000);
+if (!ctype_digit($id)) { header("Location: index.php"); die; }
+$result = @mysql_query ("Select * from `users` where `id`='".$id."' LIMIT 1;");
+if (mysql_affected_rows() == 0) {
+header ("Location: login.php?id=$id&ps=$ps&ref=$ref");
+exit;
+}
+
+$row = mysql_fetch_array ($result);
+
+if ($ps !== $row["pass"]) {
+echo $xml;
+echo $dtd;
+echo "<wml>\n";
+echo "<card id=\"xeta\" title=\"Xeta\">\n";
+echo "<p align=\"center\">";
+echo "<small>\n";
+echo "&#350;ifre d&#252;zg&#252;n deyil.";
+echo "</small>";
+echo "</p></card></wml>";
+mysql_close($link);
+exit;
+}
+
+
+if($row['fsize'] == "0") { $fsize1 = "<small>"; $fsize2 = "</small>"; }
+else { $fsize1 = "<medium>"; $fsize2 = "</medium>"; }
+
+
+require("require/optimize.php");
+
+return array($row, $id, $ps, $fsize1, $fsize2);
+}
+?>

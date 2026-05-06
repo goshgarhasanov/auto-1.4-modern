@@ -1,0 +1,31 @@
+////  salam eziz aznet masterleri //// men BY_ErroR!ink size ay_chat1.2  skriptimi paylawiram!!!////
+
+///demeli skriptde indiyedek paylanan skriptlerin icinde en guvenlisi men paylawdigimdi!! tam bildiylerim dirkalari baglamiwam!!///
+
+/// bu qeder eziyyet cekib Tam iwlek >> AuTO panel + ErroR_Panel + Securety panel!! esas xod geden lerden qurdum!!!///
+/// Shel zad + dirka qoymamiwam skriptde!!!///
+_________________________
+/// eziyyetime hormet olaraq  ( Muellif  BY_ErroR!ink sozunu silmeyin!! //
+
+/// muellifi silene haram edirem!! /// ve anasini bacisini sikim muellifi silenin diyirem!!!//
+
+///geldik esas meseleye  ///
+
+///skriptin qurulmasi ///Mysql baza yaradin sql papkasinda olan sql.sql faylini import edin!!!!///
+////ay.php  + file/inc  << fayllarina yaratdigniz baza melumatlarni yazin!!//
+_________________________
+///yaxwi iwlemesi ucun butun dat fayllara chmod666 + butun papkalara chmod777mmmverin!!! ///
+images.php
+image.php
+file/max.php
+file/normal.php  <<editleyin!! ve oz saytinizin adini yazin bawqa sayt adi gorseniz!!///
+/// cunki bunlarii deyiwmesez chatdaki wekillerin ve gonderilen mmslerin ustunde bawqa saytin adi reklam kimi gedecek!!///
+ve hazirdi : mendende size bu qeder)) bu heyatda yalniz yaxwiliq qalacaq )) ugurlar gedin keyf edin auto1.2 den hecde geri qalmir bu skript!!//
+
+imza : BY_ErroR!ink
+elaqe : agent 24/7 aciqdi xak_ker_999@mail.ru
+tel : 0517833747 
+_________________________
+/////// script name ay_chat1.2   numune : DoYSan.NeT ///
+
+

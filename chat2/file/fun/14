@@ -1,0 +1,9 @@
+<?php
+$postov_v_teme = mysql_num_rows( mysql_query( "SELECT * FROM `sh_post` WHERE `tema`='{$uid}';" ) );
+$postov_v_cate = mysql_fetch_array( mysql_query( "SELECT * FROM `sh_podcat` WHERE `id`='{$tema['cat']}';" ) );
+$postov_v_forume = mysql_fetch_array( mysql_query( "SELECT * FROM `sh_cat` WHERE `id`='{$postov_v_cate['refid']}';" ) );
+$budet_v_forume = $postov_v_forume['post'] - 1;
+echo "M&#246;vzu silindi<br/>";
+mysql_query( "UPDATE `sh_tem` SET `tesdiq`='3' WHERE `id`='{$uid}';" );
+mysql_query( "UPDATE `sh_post` SET `tesdiq`='3' WHERE `id`='{$uid}';" );
+?>

@@ -1,0 +1,70 @@
+<?php
+
+if ($row['level'] < 4) {
+echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+echo "<!DOCTYPE wml PUBLIC \"-//WAPFORUM//DTD WML 1.2//EN\" \"http://www.wapforum.org/DTD/wml12.dtd\">\n";
+echo "<wml>\n";
+echo "<card id=\"olmaz\" title=\"Diqqet\" ontimer=\"enter.php?id={$id}&amp;ps={$ps}&amp;ref={$ref}\"><timer value=\"15\"/>\n";
+echo "<p align=\"center\">\n";
+echo $fsize1;
+echo "Sizin bu b&#246;lmeye girmek h&#252;ququnuz yoxdur.\n";
+echo $fsize2;
+echo "</p>\n";
+echo "</card>\n";
+echo "</wml>\n";
+mysql_close($link);
+exit();
+}
+
+$user = $row['user'];
+
+ob_start();
+echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+echo "<!DOCTYPE wml PUBLIC \"-//WAPFORUM//DTD WML 1.2//EN\" \"http://www.wapforum.org/DTD/wml12.dtd\">\n";
+echo "<wml>\n";
+echo "<head><meta http-equiv=\"Cache-Control\" content=\"no-cache\" forua=\"true\"/></head>\n";
+echo "<card id=\"mpanel\" title=\"Admin Panel\" >\n";
+echo "<p align =\"left\">\n";
+echo $fsize1;
+echo "Salam <b>{$user}:</b><br/>*****<br/>\n";
+echo "&#304;stifade&#231;inin ad&#305;:<br/>\n";
+echo $fsize2;
+echo "<input name=\"nick{$ref}\" title=\"nick\" emptyok=\"true\"/><br/>\n";
+echo $fsize1;
+echo "Vaxt:<br/>\n";
+echo $fsize2;
+echo "<select name=\"wtime{$ref}\">\n";
+echo "<option value=\"5\">5 deqiqe </option>\n";
+echo "<option value=\"15\">15 deqiqe </option>\n";
+echo "<option value=\"30\">30 deqiqe </option>\n";
+echo "<option value=\"60\">1 Saat </option>\n";
+echo "<option value=\"180\">3 Saat </option>\n";
+if ($row['level'] == 5)echo "<option value=\"300\">5 Saat </option>\n";
+echo "</select><br/>\n";
+echo $fsize1;
+echo "<b>Sebeb:</b><br/>\n";
+echo $fsize2;
+echo "<input name=\"whykik{$ref}\" maxlength=\"200\" title=\"whykik\" emptyok=\"true\"/><br/>\n";
+echo $fsize1;
+echo "<b><anchor title=\"go\">Xaric et!<go href=\"ban.php?id={$id}&amp;ps={$ps}&amp;ref={$ref}\" method=\"post\">\n";
+echo "<postfield name=\"nick\" value=\"$(nick{$ref})\"/>\n";
+echo "<postfield name=\"wtime\" value=\"$(wtime{$ref})\"/>\n";
+echo "<postfield name=\"whykik\" value=\"$(whykik{$ref})\"/>\n";
+echo "</go></anchor></b><br/>\n";
+echo "<u><anchor title=\"go\">Xeberdarl&#305;q et!<go href=\"ban.php?id={$id}&amp;ps={$ps}&amp;ref={$ref}\" method=\"post\">\n";
+echo "<postfield name=\"nick\" value=\"$(nick{$ref})\"/>\n";
+echo "<postfield name=\"wtime\" value=\"xeber\"/>\n";
+echo "<postfield name=\"whykik\" value=\"$(whykik{$ref})\"/>\n";
+echo "</go></anchor></u><br/>\n";
+echo $fsize2;
+echo $fsize1;
+echo "*****<br/>\n";
+echo "<a href=\"admin.php?id={$id}&amp;ps={$ps}&amp;ref={$ref}\">Admin Panel</a><br/>\n";
+echo "<a href=\"enter.php?id={$id}&amp;ps={$ps}&amp;ref={$ref}\">Dehliz</a><br/>\n";
+echo $fsize2;
+echo "</p>\n";
+echo "</card>\n";
+echo "</wml>\n";
+mysql_close($link);
+ob_end_flush();
+?>

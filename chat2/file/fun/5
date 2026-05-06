@@ -1,0 +1,161 @@
+<?php
+
+$tm = time( );
+$time = time( ) + $vaxt;
+$del = file( "file/dat_folder/delete.dat" );
+$gun = trim( $del[0] );
+if ( $gun < $tm )
+{
+$slc = file( "file/bal_bot/0.dat" );
+$usbot = trim( $slc[1] );
+$date = date( "d.m.y |H:i", mktime( date( "H" ) + $xsat ) );
+$adminrutbe = mysql_query( "select `id`,`user` from `users` where `rutbe` < '".time( )."' and `rutbe` != '0';" );
+if ( mysql_affected_rows( ) != 0 )
+{
+while ( $meets = mysql_fetch_array( $adminrutbe ) )
+{
+$u_usid = $meets['id'];
+$u_user = $meets['user'];
+mysql_query( "Update `users` set `con`='3', `level`='0', `rutbe`='0' where `id` ='".$u_usid."';" );
+$topic = "R&#252;tbeniz haqq&#305;nda!";
+$message = "H&#246;rmetli <b>".$u_user."</b>, Size Rehberlik m&#252;veqqeti (vaxt ile) r&#252;tbe vermi&#351;di. R&#252;tbenin m&#252;ddeti tamam oldu...<br/>Siz indi r&#252;tbeli &#350;exs deyilsiz...!<br/>Yeniden r&#252;tbe almaq &#252;&#231;&#252;n bal xidmetinden istifade edin, adminleri narahat etmeyin belke yox demeye &#252;z&#252; gelmir, bu o demek deyil ki, &#252;z vurmal&#305;s&#305;z....";
+@mysql_query( @"insert into zapiski values(0,'".@$usbot."','0','".@$message."','".@$u_user."','".@$u_usid."','".@$time."','0','".@$topic."','".@$date."','1','1');" );
+@$save = @fopen( "file/control/11.dat", "a+" );
+$qeyd = "".base64_encode( "<u>Rehberlik terefinden <b>{$u_user}</b>, &#252;&#231;&#252;n verilmi&#351; r&#252;tbesinin vaxt&#305; tamam oldu</u>: (<b>{$date}</b>)" )."\n";
+@fwrite( @$save, @"{$qeyd}" );
+@fflush( @$save );
+@fclose( @$save );
+}
+unset( $save );
+unset( $meets );
+}
+$antiiqnor = mysql_query( "select `id`,`usid`,`leqeb` from `hesab` where `saat` < '".time( )."' and `x` = '7';" );
+if ( mysql_affected_rows( ) != 0 )
+{
+while ( $meets = mysql_fetch_array( $antiiqnor ) )
+{
+$keyid = $meets['id'];
+$u_usid = $meets['usid'];
+$u_user = $meets['leqeb'];
+mysql_query( "DELETE from `hesab` WHERE `id`='".$keyid."';" );
+$topic = "Anti-&#304;qnor haqq&#305;nda";
+$message = "H&#246;rmetli <b>".$u_user."</b>, Sizin \"<b>Anti-&#304;qnor</b>\" Sisteminizin vaxt&#305; bitdi.<br/>Yeniden Anti-&#304;qnor Sisteminden istifade etmek &#252;&#231;&#252;n bal xidmetinden istifade edin.\n";
+@mysql_query( @"insert into zapiski values(0,'".@$usbot."','0','".@$message."','".@$u_user."','".@$u_usid."','".@$time."','0','".@$topic."','".@$date."','1','1');" );
+@$save = @fopen( "file/bal_bot/16.dat", "a+" );
+$qeyd = "".base64_encode( "<b>{$u_user}</b>, istifade m&#252;ddeti  bitdi. (<b>{$date}</b>)" )."\n";
+@fwrite( @$save, @"{$qeyd}" );
+@fflush( @$save );
+@fclose( @$save );
+}
+unset( $save );
+unset( $meets );
+}
+$antiiqnor = mysql_query( "select `id`,`usid`,`leqeb` from `hesab` where `saat` < '".time( )."' and `x` = '8';" );
+if ( mysql_affected_rows( ) != 0 )
+{
+while ( $meets = mysql_fetch_array( $antiiqnor ) )
+{
+$keyid = $meets['id'];
+$u_usid = $meets['usid'];
+$u_user = $meets['leqeb'];
+mysql_query( "DELETE from `hesab` WHERE `id`='".$keyid."';" );
+mysql_query( "Update `users` set `zn`='' where `id` ='".$u_usid."';" );
+$topic = "Gold User haqq&#305;nda";
+$message = "H&#246;rmetli <b>".$u_user."</b>, Sizin \"<b>Gold User</b>\" olmaq&#305;n&#305;z&#305;n vaxt&#305; bitdi.<br/>Yeniden Gold User olmaq &#252;&#231;&#252;n bal xidmetinden istifade edin.\n";
+@mysql_query( @"insert into zapiski values(0,'".@$usbot."','0','".@$message."','".@$u_user."','".@$u_usid."','".@$time."','0','".@$topic."','".@$date."','1','1');" );
+@$save = @fopen( "file/bal_bot/17.dat", "a+" );
+$qeyd = "".base64_encode( "<b>{$u_user}</b>, istifade m&#252;ddeti  bitdi. (<b>{$date}</b>)" )."\n";
+@fwrite( @$save, @"{$qeyd}" );
+@fflush( @$save );
+@fclose( @$save );
+}
+unset( $save );
+unset( $meets );
+}
+$rnid = mysql_query( "select `id`,`usid`,`leqeb` from `hesab` where `saat` < '".time( )."' and `x` = '9';" );
+if ( mysql_affected_rows( ) != 0 )
+{
+while ( $meets = mysql_fetch_array( $rnid ) )
+{
+$keyid = $meets['id'];
+$u_usid = $meets['usid'];
+$u_user = $meets['leqeb'];
+mysql_query( "DELETE from `hesab` WHERE `id`='".$keyid."';" );
+@unlink( @"i/".@$u_usid.".gif" );
+$topic = "Rengli nik haqq&#305;nda";
+$message = "H&#246;rmetli <b>".$u_user."</b>, Sizin \"<b>Rengli Nik</b>\" D&#252;zeltmek &#252;&#231;&#252;n olan vaxt&#305;n&#305;z bitdi.<br/>Yeniden bu xidmetden istifade etmek &#252;&#231;&#252;n bal xidmetinden istifade edin.\n";
+@mysql_query( @"insert into zapiski values(0,'".@$usbot."','0','".@$message."','".@$u_user."','".@$u_usid."','".@$time."','0','".@$topic."','".@$date."','1','1');" );
+@$save = @fopen( "file/bal_bot/18.dat", "a+" );
+$qeyd = "".base64_encode( "<b>{$u_user}</b>, istifade m&#252;ddeti  bitdi. (<b>{$date}</b>)" )."\n";
+@fwrite( @$save, @"{$qeyd}" );
+@fflush( @$save );
+@fclose( @$save );
+}
+unset( $save );
+unset( $meets );
+}
+$del_1 = trim( $del[1] );
+$del_3 = trim( $del[3] );
+$del_4 = trim( $del[4] );
+$del_5 = trim( $del[5] );
+$del_6 = trim( $del[6] );
+if ( 1 <= $del_1 )
+{
+$del_1_1 = time( ) - $del_1 * 24 * 60 * 60;
+mysql_query( "DELETE from `mesaj` WHERE `readd`='1' and `time`<'".$del_1_1."';" );
+}
+if ( 1 <= $del_2 )
+{
+$del_2_1 = time( ) - $del_2 * 24 * 60 * 60;
+mysql_query( "DELETE from `mesaj` WHERE `time`<'".$del_2_1."';" );
+}
+if ( 1 <= $del_3 )
+{
+$del_3_1 = time( ) - $del_3 * 24 * 60 * 60;
+mysql_query( "DELETE from `zapiski` WHERE `time`<'".$del_3_1."' and `readd` = '1';" );
+}
+if ( 1 <= $del_4 )
+{
+$del_4_1 = time( ) - $del_4 * 24 * 60 * 60;
+mysql_query( "DELETE from `zapiski` WHERE `time`<'".$del_4_1."';" );
+}
+if ( 15 <= $del_5 )
+{
+function full_del_dir( $directory )
+{
+$dir = opendir( $directory );
+while ( $file = readdir( $dir ) )
+{
+$r = mysql_query( "select `user` from `users` where `id` = '".$file."';" );
+if ( !( mysql_affected_rows( ) == 0 ) )
+{
+continue;
+}
+else if ( is_file( $directory."/".$file ) )
+{
+@unlink( @$directory."/".@$file );
+}
+else if ( is_dir( $directory."/".$file ) && $file != "." && $file != ".." )
+{
+full_del_dir( $directory."/".$file );
+}
+}
+@closedir( @$dir );
+@rmdir( @$directory );
+}
+full_del_dir( "photos" );
+$del_5_1 = time( ) - $del_5 * 24 * 60 * 60;
+mysql_query( "delete from `users` where `time`<'".$del_5_1."' and `id`>'100';" );
+}
+if ( $del_6 != 0 )
+{
+mysql_query( "OPTIMIZE TABLE `albom` , `bannlist` , `bots` , `conf` , `c_nick` , `elan` , `etiraf_sherh` , `etiraf_text` , `fikirler` , `friends` , `hediyye` , `hesab` , `ignor` , `levels` , `mesaj` , `mms` , `news` , `obiav` , `qefes` , `qefess` , `reklam` , `reytinq` , `room0` , `room1` , `room2` , `room3` , `room4` , `room5` , `room6` , `room7` , `room8` , `room9` , `room10` , `rooms` , `setting` , `sifarish` , `sikayet` , `svadbi` , `users` , `vopros` , `vstrechi` , `zapiski` " );
+}
+$yenigun = $tm + 7200;
+$yenigun = "{$yenigun}\n{$del_1}\n{$del_2}\n{$del_3}\n{$del_4}\n{$del_5}\n{$del_6}";
+@$save = @fopen( "file/dat_folder/delete.dat", "w+" );
+@fwrite( @$save, @"{$yenigun}" );
+@fflush( @$save );
+@fclose( @$save );
+}
+?>

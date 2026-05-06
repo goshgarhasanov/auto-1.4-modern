@@ -1,0 +1,26 @@
+<?php
+
+if (isset($_GET['uid'])) {
+$uid = (integer)$_GET['uid'];
+if ($cat) {
+$podcat_query = mysql_query("SELECT * FROM `sh_podcat` where `refid`='{$uid}';");
+if (0 < mysql_num_rows($podcat_query)) {
+echo "<u>Kataloq se&#231;in</u>\n<br/>----<br/>\n";
+while ($pod_cat = mysql_fetch_array($podcat_query)) {
+$tem_num = mysql_num_rows(mysql_query("SELECT * FROM `sh_tem` WHERE `cat`='{$pod_cat['id']}' and `tesdiq`='2';"));
+echo "<a href=\"forum.php?{$mygetname}&amp;cmd=3&amp;uid=".$pod_cat['id']."&amp;ref={$ref}\">".$pod_cat['name']."</a> [".$tem_num."]<br/>\n";
+}
+echo "----<br/>\n";
+} else {
+echo "Bu b&#246;lmede Kataloq yaradilmay&#305;b...<br/>----<br/>\n";
+}
+echo "<a href=\"forum.php?{$mygetname}&amp;ref={$ref}\">Forum</a><br/>\n";
+} else {
+echo "Bele B&#246;lme yoxdur...<br/>----<br/>\n";
+echo "<a href=\"forum.php?{$mygetname}&amp;ref={$ref}\">Forum</a><br/>\n";
+}} else {
+echo "Bele B&#246;lme yoxdur...<br/>----<br/>\n";
+echo "<a href=\"forum.php?{$mygetname}&amp;ref={$ref}\">Forum</a><br/>\n";
+}
+
+?>

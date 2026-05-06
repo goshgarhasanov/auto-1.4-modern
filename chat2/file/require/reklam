@@ -1,0 +1,17 @@
+<?
+$mssg = str_replace("А", "A", $mssg);
+$mssg = str_replace("а", "a", $mssg);
+$mssg = str_replace("В", "B", $mssg);
+$mssg = str_replace("С", "C", $mssg);
+$mssg = str_replace("с", "c", $mssg);
+$mssg = str_replace("Е", "E", $mssg);
+$mssg = str_replace("е", "e", $mssg);
+$mssg = str_replace("М", "M", $mssg);
+$mssg = str_replace("м", "m", $mssg);
+$mssg = str_replace("Т", "T", $mssg);
+$mssg = str_replace("О", "O", $mssg);
+$mssg = str_replace("0", "O", $mssg);
+$mssg = str_replace("о", "o", $mssg);
+$rekl1=array(strstr($mssg,"hic."),strstr($mssg,"hic "),strstr($mssg,"hic_"),strstr($mssg,"hic-"),strstr($mssg,"wap "),strstr($mssg,"w.a.p"),strstr($mssg,"wap,"),strstr($mssg,"wap ."),strstr($mssg,",net "),strstr($mssg,".net"),strstr($mssg,"n.e.t"),strstr($mssg,"_net"),strstr($mssg,".com"),strstr($mssg,". com"),strstr($mssg,", com"),strstr($mssg,"_com"),strstr($mssg,"c.o.m"),strstr($mssg,"com "),strstr($mssg,".az"),strstr($mssg,"_az"),strstr($mssg,"a.z"),strstr($mssg,".ws"),strstr($mssg,",ws"),strstr($mssg,". ws"),strstr($mssg,".biz"),strstr($mssg,"_biz"),strstr($mssg,"-biz"),strstr($mssg,"-net"),strstr($mssg,"-az"),strstr($mssg,"_biz"),strstr($mssg,"b.i.z"),strstr($mssg,"_ru"),strstr($mssg,"wab. "),strstr($mssg,"wab, "),strstr($mssg,"wen, "),strstr($mssg,"wen. "),strstr($mssg,"wen "),strstr($mssg,"wab "));
+$mssg=str_replace($rekl1,$rekl2,$mssg);
+?>

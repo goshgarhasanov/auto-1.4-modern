@@ -1,0 +1,123 @@
+<?php
+
+$engDay = date("l"); 
+$indikivaxt = date("Hi"); 
+$bu_ay_nece_gundu = date("t"); 
+$bu_ay_aaa = date("m"); 
+
+//BUGUN SIFIRLA 
+if($indikivaxt>=2340 && $indikivaxt<=2359) 
+{ 
+$KD = mysql_query("SELECT * FROM `users`;"); 
+while($ibrahim = mysql_fetch_array($KD)) 
+{ 
+$kime = $ibrahim['id']; 
+mysql_query("UPDATE `users` SET `vaxt_gun` = '0' WHERE `id` = '".$kime."';"); 
+} 
+} 
+//BUGUN SIFIRLA SON 
+
+if ($engDay == "Sunday") { 
+
+if($indikivaxt>=2340 && $indikivaxt<=2359) 
+{ 
+$KD = mysql_query("SELECT * FROM `users`;"); 
+while($ibrahim = mysql_fetch_array($KD)) 
+{ 
+$kime = $ibrahim['id']; 
+mysql_query("UPDATE `users` SET `vaxt_hefte` = '0' WHERE `id` = '".$kime."';"); 
+} 
+} 
+} 
+
+if ($bu_ay_nece_gundu == $bu_ay_aaa) { 
+
+
+
+// Ayliq yenileme 
+
+if($indikivaxt>=2340 && $indikivaxt<=2359) 
+{ 
+$KD = mysql_query("SELECT * FROM `chat_users`;"); 
+while($ibrahim = mysql_fetch_array($KD)) 
+{ 
+$kime = $ibrahim['id']; 
+mysql_query("UPDATE `users` SET `vaxt_ay` = '0' WHERE `id` = '".$kime."';"); 
+} 
+} 
+// Ayliq yenileme Son 
+
+} 
+
+$q = mysql_query("SELECT * FROM `users` WHERE `id` = '".$id."' AND `pass` = '".$ps."';"); 
+$user = mysql_fetch_array($q); 
+$vaxt_ay = $user['vaxt_ay']; 
+$vaxt_gun = $user['vaxt_gun']; 
+$vaxt_hefte = $user['vaxt_hefte']; 
+$vaxt_umumi = $user['vaxt_umumi']; 
+$kdstime = $user['aktivtime1']; 
+
+$qaliq = time() - $kdstime; 
+$dq = '300'; 
+if ($qaliq >= $dq) { 
+$update = mysql_query("UPDATE `users` SET `aktivtime1` = '".time()."' WHERE `id` = '".$id."';"); 
+} else { 
+$vaxt = time() - $kdstime; 
+$vaxt_ay = $vaxt_ay + $vaxt; 
+$vaxt_gun = $vaxt_gun + $vaxt; 
+$vaxt_hefte = $vaxt_hefte + $vaxt; 
+$vaxt_umumi = $vaxt_umumi + $vaxt; 
+$update = mysql_query("UPDATE `users` SET `aktivtime1` = '".time()."', `vaxt_ay` = '".$vaxt_ay."', `vaxt_gun` = '".$vaxt_gun."', `vaxt_hefte` = '".$vaxt_hefte."', `vaxt_umumi` = '".$vaxt_umumi."' WHERE `id` = '".$id."';"); 
+} 
+$q = mysql_query("SELECT * FROM `users` WHERE `id` = '".$id."' AND `pass` = '".$ps."';"); 
+
+$vaxt_bal = $user['bal_time1']; 
+$qaliq = time() - $kdstime; 
+$dq = '300'; 
+if ($qaliq >= $dq) { 
+$update = mysql_query("UPDATE `users` SET `aktivtime1` = '".time()."' WHERE `id` = '".$id."';"); 
+} else { 
+$vaxt_bal1 = $vaxt_bal + $vaxt; 
+$update = mysql_query("UPDATE `users` SET `aktivtime1` = '".time()."', `bal_time1` = '".$vaxt_bal1."' WHERE `id` = '".$id."';"); 
+} 
+$bal = mysql_query("SELECT * FROM `users` WHERE `bal_time1` >= '3600';");
+while($panter = mysql_fetch_array($bal)){
+
+$bal_id = $panter["id"];
+$bal_bal = $panter["bal"];
+$bal_vaxt_gun = $panter["bal_time1"];
+$bal_cins = $panter["sex"];
+$bal_user = $panter["user"];
+
+if($bal_vaxt_gun < 86400 && $bal_vaxt_gun > 3600){ 
+$pan_vaxt = 3600; // ne qeder vata? 3600=1 saat
+$ne_qeder = 10; // ne qeder bal verilecek?
+$pan = $bal_vaxt_gun / $pan_vaxt;
+$pan = strtok($pan ,'.'); 
+$pan_new = $pan * $ne_qeder;
+$bal_new = $bal_bal + $pan_new;
+mysql_query("UPDATE `users` SET `bal` = '".$bal_new."', `bal_time1` = '0' WHERE `id` = '".$bal_id."';");
+$adm = @mysql_query ("Select user from users where id='1' LIMIT 1;");
+$z = @mysql_fetch_array ($adm);
+$administration = $z["user"];
+
+$kol = rand(0,99999999);
+$kol2 = rand(0,99999999);
+$time = time();
+$data = date("d.m.y [H:i]");
+$times = getmicrotime();
+$topic = "Tebrikler!!! $pan_new bal hediyye qazand&#305;n&#305;z";
+$topic2 = "$pan_new bal hediyye verildi!";
+
+if($bal_cins == "0")$muraciet = "Cenab"; else $muraciet = "Xan&#305;m";
+$bal_message = "Salam <b>$muraciet $bal_user</b> Siz bu g&#252;n &#231;atda $pan saat aktiv oldu&#287;unuz &#252;&#231;&#252;n <b>Sistem</b> size $pan_new bal hediyye etdi. <br/>Hal-haz&#305;rda sizin $bal_new bal&#305;n&#305;z var.<br/> <i>Aktiv Olun. Te&#351;ekk&#252;rler.</i>\n";
+$message = "<b>$bal_user</b> niki bu g&#252;n &#231;atda $pan saat aktiv oldu&#287;u &#252;&#231;&#252;n ona $pan_new bal hediyye edildi. <br/>Hal-haz&#305;rda userin $bal_new bal&#305; var.<br/>\n";
+
+mysql_query("Insert into zapiski set klu4='".$kol."', who ='Xeber&#231;i', idwho ='8', message = '".$bal_message."', towhom = '".$bal_user."', idtowhom = '".$bal_id."', time = '".$times."', readd = '0', topic = '".$topic."', date='".$data."'");
+
+}
+
+}
+
+
+?>
