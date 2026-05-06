@@ -1,8 +1,0 @@
-<?php
-@mysql_query( "UPDATE `sh_tem` SET `tesdiq`='2' WHERE `id`='{$uid}' LIMIT 1;" );
-$user_id_select = mysql_fetch_array( mysql_query( "SELECT `avtor`,`cat` FROM `sh_tem` WHERE `id`='{$uid}';" ) );
-$plus_post_podcat_q = mysql_fetch_array( mysql_query( "SELECT * FROM `sh_podcat` WHERE `id`='{$user_id_select['1']}';" ) );
-mysql_query( "UPDATE `sh_cat` SET `movzu`=`movzu`+1 WHERE `id`='{$plus_post_podcat_q['refid']}';" );
-mysql_query( "UPDATE `users` SET  `fpost`=1+`fpost` WHERE `id`='".$user_id_select[0]."';" );
-echo "M&#246;vzu qaytar&#305;ld&#305;<br/>";
-?>
