@@ -1,0 +1,94 @@
+{% extends 'layout/base.twig' %}
+
+{% block title %}Giriş — {{ app_name|default('Goshgar.Az') }}{% endblock %}
+
+{% block content %}
+<section class="auth">
+  <div class="auth__card card">
+    <div class="auth__head">
+      <span class="auth__icon" aria-hidden="true">
+        <i data-lucide="sparkles"></i>
+      </span>
+      <h1 class="auth__title">
+        <span class="text-grad">{{ app_name|default('Goshgar.Az') }}</span>-a xoş gəldin
+      </h1>
+      <p class="auth__sub">Hesabına daxil ol və söhbətə davam et.</p>
+    </div>
+
+    {% if error is defined and error %}
+      <div class="form-error" role="alert">
+        <i data-lucide="alert-circle"></i>
+        <span>{{ error }}</span>
+      </div>
+    {% endif %}
+
+    <form method="post" action="/login" class="auth__form" novalidate>
+      {% if csrf_token is defined %}
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+      {% endif %}
+
+      <div class="field">
+        <label class="field__label" for="username">İstifadəçi adı</label>
+        <div class="input-group">
+          <i data-lucide="user" class="input-group__icon"></i>
+          <input
+            class="input"
+            type="text"
+            id="username"
+            name="username"
+            value="{{ old.username|default('') }}"
+            autocomplete="username"
+            autocapitalize="off"
+            spellcheck="false"
+            required
+            minlength="3"
+            maxlength="32"
+            placeholder="məsələn, goshgar">
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field__label" for="password">Şifrə</label>
+        <div class="input-group">
+          <i data-lucide="lock" class="input-group__icon"></i>
+          <input
+            class="input"
+            type="password"
+            id="password"
+            name="password"
+            autocomplete="current-password"
+            required
+            minlength="4"
+            placeholder="••••••••">
+          <button type="button" class="input-group__action" data-pw-toggle="#password" aria-label="Şifrəni göstər/gizlə">
+            <i data-lucide="eye" data-pw-show></i>
+            <i data-lucide="eye-off" data-pw-hide hidden></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="field field--row">
+        <label class="checkbox">
+          <input type="checkbox" name="remember" value="1" {% if old.remember|default(false) %}checked{% endif %}>
+          <span>Məni xatırla</span>
+        </label>
+        <a class="auth__link" href="/forgot">Şifrəni unutmusan?</a>
+      </div>
+
+      <button type="submit" class="btn btn--primary btn--lg btn--block">
+        <i data-lucide="log-in"></i>
+        <span>Daxil ol</span>
+      </button>
+    </form>
+
+    <div class="divider"><span class="divider__or">yaxud</span></div>
+
+    <p class="auth__foot">
+      Hesabın yoxdur?
+      <a class="auth__link auth__link--strong" href="/register">
+        Qeydiyyatdan keç <i data-lucide="arrow-right"></i>
+      </a>
+    </p>
+  </div>
+</section>
+{% endblock %}

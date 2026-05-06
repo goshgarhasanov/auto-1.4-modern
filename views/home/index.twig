@@ -1,0 +1,173 @@
+{% extends 'layout/base.twig' %}
+
+{% block title %}{{ app_name|default('Goshgar.Az') }} — Azərbaycanın söhbət şəbəkəsi{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <div class="hero__inner">
+    <span class="hero__badge">
+      <i data-lucide="sparkles"></i>
+      <span>Yeni nəsil söhbət təcrübəsi</span>
+    </span>
+
+    <h1 class="hero__title">
+      <span class="text-grad">Goshgar.Az</span>-a xoş gəldin
+    </h1>
+
+    <p class="hero__sub">
+      Dostlarınla söhbət et, yeni insanlarla tanış ol, fikirlərini paylaş.
+      Tamamilə Azərbaycan dilində, sürətli və modern.
+    </p>
+
+    <div class="hero__cta">
+      {% if current_user is defined and current_user %}
+        <a href="/feed" class="btn btn--primary btn--lg">
+          <i data-lucide="layout-dashboard"></i>
+          <span>Kabinetə daxil ol</span>
+        </a>
+        <a href="/online" class="btn btn--ghost btn--lg">
+          <i data-lucide="users"></i>
+          <span>Onlayn istifadəçilər</span>
+        </a>
+      {% else %}
+        <a href="/register" class="btn btn--primary btn--lg">
+          <i data-lucide="user-plus"></i>
+          <span>Qeydiyyatdan keç</span>
+        </a>
+        <a href="/login" class="btn btn--ghost btn--lg">
+          <i data-lucide="log-in"></i>
+          <span>Giriş et</span>
+        </a>
+      {% endif %}
+    </div>
+
+    <div class="stat-row">
+      <div class="stat-card">
+        <div class="stat-card__icon stat-card__icon--ocean">
+          <i data-lucide="users"></i>
+        </div>
+        <div class="stat-card__body">
+          <div class="stat-card__value">{{ stats.online|default(0) }}</div>
+          <div class="stat-card__label">Onlayn</div>
+        </div>
+        <span class="stat-card__pulse" aria-hidden="true"></span>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-card__icon stat-card__icon--aurora">
+          <i data-lucide="user-round-check"></i>
+        </div>
+        <div class="stat-card__body">
+          <div class="stat-card__value">{{ stats.total|default(0)|number_format(0, '.', ' ') }}</div>
+          <div class="stat-card__label">İstifadəçi</div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-card__icon stat-card__icon--sunset">
+          <i data-lucide="message-circle-more"></i>
+        </div>
+        <div class="stat-card__body">
+          <div class="stat-card__value">{{ stats.messages|default(0)|number_format(0, '.', ' ') }}</div>
+          <div class="stat-card__label">Mesaj</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section__head">
+    <h2 class="section__title">
+      <i data-lucide="sparkles"></i>
+      <span>Niyə Goshgar.Az?</span>
+    </h2>
+  </div>
+
+  <div class="card-grid">
+    <article class="card card--feature">
+      <div class="card__header">
+        <span class="feature-icon feature-icon--primary"><i data-lucide="zap"></i></span>
+        <h3>Sürətli</h3>
+      </div>
+      <div class="card__body">
+        <p>Köhnə telefonlarda belə işləyən yüngül interfeys. Bir saniyədə yüklənir.</p>
+      </div>
+    </article>
+
+    <article class="card card--feature">
+      <div class="card__header">
+        <span class="feature-icon feature-icon--accent"><i data-lucide="shield-check"></i></span>
+        <h3>Təhlükəsiz</h3>
+      </div>
+      <div class="card__body">
+        <p>Modern PHP 8.2, Slim 4 və ən yaxşı təhlükəsizlik praktikaları ilə qurulub.</p>
+      </div>
+    </article>
+
+    <article class="card card--feature">
+      <div class="card__header">
+        <span class="feature-icon feature-icon--success"><i data-lucide="heart"></i></span>
+        <h3>Yerli</h3>
+      </div>
+      <div class="card__body">
+        <p>Tam Azərbaycan dilində. Bizim mədəniyyətimizə uyğun dizayn və məzmun.</p>
+      </div>
+    </article>
+  </div>
+</section>
+
+{% if recent_users is defined and recent_users %}
+<section class="section">
+  <div class="section__head">
+    <h2 class="section__title">
+      <i data-lucide="user-plus-2"></i>
+      <span>Son qeydiyyatlar</span>
+    </h2>
+    <a href="/users" class="section__more">
+      Hamısı <i data-lucide="arrow-right"></i>
+    </a>
+  </div>
+
+  <ul class="user-list">
+    {% for u in recent_users %}
+      <li class="user-list__item">
+        <a href="/u/{{ u.id }}" class="user-chip">
+          <span class="user-chip__avatar">{{ u.username|slice(0,1)|upper }}</span>
+          <span class="user-chip__body">
+            <span class="user-chip__name">{{ u.username }}</span>
+            <span class="user-chip__meta">
+              {% if u.sex == 'm' %}
+                <i data-lucide="mars"></i> Kişi
+              {% elseif u.sex == 'f' %}
+                <i data-lucide="venus"></i> Qadın
+              {% else %}
+                <i data-lucide="user"></i> İstifadəçi
+              {% endif %}
+            </span>
+          </span>
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}
+
+<section class="cta-band">
+  <div class="cta-band__inner">
+    <h2 class="cta-band__title">Hələ də gözləyirsən?</h2>
+    <p class="cta-band__sub">Bir dəqiqədə qeydiyyatdan keç və icmaya qoşul.</p>
+    {% if current_user is not defined or not current_user %}
+      <a href="/register" class="btn btn--primary btn--lg">
+        <i data-lucide="rocket"></i>
+        <span>İndi başla</span>
+      </a>
+    {% else %}
+      <a href="/feed" class="btn btn--primary btn--lg">
+        <i data-lucide="arrow-right-circle"></i>
+        <span>Davam et</span>
+      </a>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

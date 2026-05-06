@@ -1,0 +1,44 @@
+{# Flash mesaj göstəricisi — controller'dən gələn `flash` array'ı oxunur #}
+{% if flash is defined and flash %}
+  <div class="toast-stack" role="status" aria-live="polite">
+    {% if flash.success is defined and flash.success %}
+      <div class="toast toast--success">
+        <i data-lucide="check-circle-2" class="toast__icon"></i>
+        <div class="toast__body">{{ flash.success }}</div>
+        <button class="toast__close" type="button" aria-label="Bağla" data-toast-close>
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+    {% endif %}
+
+    {% if flash.error is defined and flash.error %}
+      <div class="toast toast--error">
+        <i data-lucide="alert-octagon" class="toast__icon"></i>
+        <div class="toast__body">{{ flash.error }}</div>
+        <button class="toast__close" type="button" aria-label="Bağla" data-toast-close>
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+    {% endif %}
+
+    {% if flash.warning is defined and flash.warning %}
+      <div class="toast toast--warn">
+        <i data-lucide="alert-triangle" class="toast__icon"></i>
+        <div class="toast__body">{{ flash.warning }}</div>
+        <button class="toast__close" type="button" aria-label="Bağla" data-toast-close>
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+    {% endif %}
+
+    {% if flash.info is defined and flash.info %}
+      <div class="toast toast--info">
+        <i data-lucide="info" class="toast__icon"></i>
+        <div class="toast__body">{{ flash.info }}</div>
+        <button class="toast__close" type="button" aria-label="Bağla" data-toast-close>
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+    {% endif %}
+  </div>
+{% endif %}

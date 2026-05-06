@@ -1,4 +1,5 @@
 # Dependencies
+/vendor
 chat-app/vendor/
 chat-app/var/cache/*
 chat-app/var/log/*
@@ -28,6 +29,16 @@ Thumbs.db
 *.log
 chat/access.dat
 
+# Storage (modern layout)
+/storage/logs/*
+!/storage/logs/.gitkeep
+/storage/cache/*
+!/storage/cache/.gitkeep
+/storage/sessions/*
+!/storage/sessions/.gitkeep
+/storage/uploads/*
+!/storage/uploads/.gitkeep
+
 # Runtime / cache
 chat/file/cache/
 chat/tmp/
@@ -44,6 +55,8 @@ chat/file/mms/
 
 # PHP
 *.cache
+.phpunit.result.cache
+.phpunit.cache/
 
 # Backup
 *.bak

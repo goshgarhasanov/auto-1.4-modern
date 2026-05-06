@@ -1,0 +1,26 @@
+{% extends 'layout/base.twig' %}
+
+{% block title %}404 — Səhifə tapılmadı{% endblock %}
+
+{% block content %}
+<section class="error-page">
+  <div class="error-page__inner">
+    <div class="error-page__emoji" aria-hidden="true">😔</div>
+    <h1 class="error-page__code text-grad">404</h1>
+    <h2 class="error-page__title">Səhifə tapılmadı</h2>
+    <p class="error-page__sub">
+      Axtardığın səhifə silinib, ya da heç vaxt mövcud olmayıb. Yolun düzgün yazıldığını yoxla.
+    </p>
+    <div class="error-page__cta">
+      <a href="/" class="btn btn--primary btn--lg">
+        <i data-lucide="home"></i>
+        <span>Ana səhifəyə qayıt</span>
+      </a>
+      <button type="button" class="btn btn--ghost btn--lg" onclick="history.back()">
+        <i data-lucide="arrow-left"></i>
+        <span>Geri</span>
+      </button>
+    </div>
+  </div>
+</section>
+{% endblock %}

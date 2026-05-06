@@ -1,0 +1,126 @@
+{% extends 'layout/base.twig' %}
+
+{% block title %}Qeydiyyat — {{ app_name|default('Goshgar.Az') }}{% endblock %}
+
+{% block content %}
+<section class="auth">
+  <div class="auth__card card auth__card--wide">
+    <div class="auth__head">
+      <span class="auth__icon" aria-hidden="true">
+        <i data-lucide="user-plus"></i>
+      </span>
+      <h1 class="auth__title">
+        <span class="text-grad">Yeni hesab</span> yarat
+      </h1>
+      <p class="auth__sub">Bir dəqiqə içində icmaya qoşul.</p>
+    </div>
+
+    {% if error is defined and error %}
+      <div class="form-error" role="alert">
+        <i data-lucide="alert-circle"></i>
+        <span>{{ error }}</span>
+      </div>
+    {% endif %}
+
+    {% if errors is defined and errors %}
+      <div class="form-error" role="alert">
+        <i data-lucide="alert-circle"></i>
+        <ul class="form-error__list">
+          {% for e in errors %}<li>{{ e }}</li>{% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+
+    <form method="post" action="/register" class="auth__form" novalidate>
+      {% if csrf_token is defined %}
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+      {% endif %}
+
+      <div class="field">
+        <label class="field__label" for="username">İstifadəçi adı</label>
+        <div class="input-group">
+          <i data-lucide="at-sign" class="input-group__icon"></i>
+          <input
+            class="input"
+            type="text"
+            id="username"
+            name="username"
+            value="{{ old.username|default('') }}"
+            autocomplete="username"
+            autocapitalize="off"
+            spellcheck="false"
+            required
+            minlength="3"
+            maxlength="32"
+            pattern="[A-Za-z0-9_\-]{3,32}"
+            placeholder="məsələn, goshgar">
+        </div>
+        <p class="field__help">3-32 hərf, rəqəm, alt-xətt və ya defis. Boşluq olmaz.</p>
+      </div>
+
+      <div class="field">
+        <label class="field__label" for="password">Şifrə</label>
+        <div class="input-group">
+          <i data-lucide="lock" class="input-group__icon"></i>
+          <input
+            class="input"
+            type="password"
+            id="password"
+            name="password"
+            autocomplete="new-password"
+            required
+            minlength="4"
+            placeholder="ən azı 4 simvol">
+          <button type="button" class="input-group__action" data-pw-toggle="#password" aria-label="Şifrəni göstər/gizlə">
+            <i data-lucide="eye" data-pw-show></i>
+            <i data-lucide="eye-off" data-pw-hide hidden></i>
+          </button>
+        </div>
+        <p class="field__help">Minimum 4 simvol. Daha güclü şifrə daha yaxşıdır.</p>
+      </div>
+
+      <fieldset class="field">
+        <legend class="field__label">Cins</legend>
+        <div class="radio-cards">
+          <label class="radio-card">
+            <input type="radio" name="sex" value="m" {% if old.sex|default('') == 'm' %}checked{% endif %} required>
+            <span class="radio-card__inner">
+              <i data-lucide="mars" class="radio-card__icon radio-card__icon--blue"></i>
+              <span class="radio-card__label">Kişi</span>
+            </span>
+          </label>
+
+          <label class="radio-card">
+            <input type="radio" name="sex" value="f" {% if old.sex|default('') == 'f' %}checked{% endif %} required>
+            <span class="radio-card__inner">
+              <i data-lucide="venus" class="radio-card__icon radio-card__icon--pink"></i>
+              <span class="radio-card__label">Qadın</span>
+            </span>
+          </label>
+        </div>
+      </fieldset>
+
+      <label class="checkbox">
+        <input type="checkbox" name="agree" value="1" required>
+        <span>
+          <a href="/rules" target="_blank" rel="noopener">Qaydalar</a>la razıyam
+        </span>
+      </label>
+
+      <button type="submit" class="btn btn--primary btn--lg btn--block">
+        <i data-lucide="rocket"></i>
+        <span>Qeydiyyatdan keç</span>
+      </button>
+    </form>
+
+    <div class="divider"><span class="divider__or">yaxud</span></div>
+
+    <p class="auth__foot">
+      Artıq hesabın var?
+      <a class="auth__link auth__link--strong" href="/login">
+        Daxil ol <i data-lucide="arrow-right"></i>
+      </a>
+    </p>
+  </div>
+</section>
+{% endblock %}

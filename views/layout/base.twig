@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="az" data-theme="auto">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#6366f1">
+  <meta name="description" content="{% block description %}Goshgar.Az — Azərbaycan dilində dostluq və söhbət şəbəkəsi.{% endblock %}">
+  <title>{% block title %}{{ app_name|default('Goshgar.Az') }}{% endblock %}</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/assets/css/app.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
+
+  {% block head %}{% endblock %}
+</head>
+<body>
+  <a class="skip-link" href="#main">Əsas məzmuna keç</a>
+
+  <header class="topbar">
+    <div class="topbar__inner">
+      <a class="brand" href="/">
+        <span class="brand__dot" aria-hidden="true"></span>
+        <span class="brand__name">{{ app_name|default('Goshgar.Az') }}</span>
+      </a>
+
+      <nav class="topnav" aria-label="Əsas naviqasiya">
+        {% if current_user is defined and current_user %}
+          <a href="/profile" class="topnav__avatar" title="{{ current_user.username }}">
+            {{ current_user.username|slice(0, 1)|upper }}
+          </a>
+          <a href="/logout" class="topnav__link" title="Çıxış">
+            <i data-lucide="log-out"></i>
+            <span class="sr-only">Çıxış</span>
+          </a>
+        {% else %}
+          <a href="/login" class="topnav__link">
+            <i data-lucide="log-in"></i>
+            <span>Giriş</span>
+          </a>
+          <a href="/register" class="btn btn--primary btn--sm">
+            <i data-lucide="user-plus"></i>
+            <span>Qeydiyyat</span>
+          </a>
+        {% endif %}
+
+        <button class="theme-toggle" type="button" aria-label="Tünd rejimi dəyişdir">
+          <i data-lucide="sun" class="theme-toggle__sun"></i>
+          <i data-lucide="moon" class="theme-toggle__moon"></i>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  {% include 'partials/flash.twig' ignore missing %}
+
+  <main class="main" id="main">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="appfoot">
+    <div class="appfoot__inner">
+      <p>
+        © {{ "now"|date("Y") }}
+        <span class="text-grad">Goshgar Hasanzadeh</span>
+        — bütün hüquqlar qorunur.
+      </p>
+      <nav class="appfoot__nav" aria-label="Alt naviqasiya">
+        <a href="/">Ana səhifə</a>
+        <span class="appfoot__sep" aria-hidden="true">•</span>
+        <a href="/rules">Qaydalar</a>
+        <span class="appfoot__sep" aria-hidden="true">•</span>
+        <a href="/contact">Əlaqə</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var root = document.documentElement;
+      var saved = localStorage.getItem('theme');
+      if (saved === 'dark' || saved === 'light') {
+        root.setAttribute('data-theme', saved);
+      } else {
+        var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        root.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+      }
+    })();
+
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.lucide && typeof lucide.createIcons === 'function') {
+        lucide.createIcons();
+      }
+
+      var btn = document.querySelector('.theme-toggle');
+      if (btn) {
+        btn.addEventListener('click', function () {
+          var root = document.documentElement;
+          var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+          root.setAttribute('data-theme', next);
+          localStorage.setItem('theme', next);
+          if (window.lucide && typeof lucide.createIcons === 'function') {
+            lucide.createIcons();
+          }
+        });
+      }
+    });
+  </script>
+
+  <script src="/assets/js/app.js" defer></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

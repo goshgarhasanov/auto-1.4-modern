@@ -1,0 +1,14 @@
+*
+!.gitignore
+!logs/
+!cache/
+!sessions/
+!uploads/
+logs/*
+cache/*
+sessions/*
+uploads/*
+!logs/.gitkeep
+!cache/.gitkeep
+!sessions/.gitkeep
+!uploads/.gitkeep
