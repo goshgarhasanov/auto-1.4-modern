@@ -4,9 +4,9 @@ define('hostname','localhost');
 define('username','root');
 define('password','');
 define('dbname','chat');
-$site = 'chat';
-$site_url = 'localhost:8000';//saytin adresi
-$site_url_2 = 'localhost:8000';//chatin adresi
+$site = 'Goshgar.Az';                    // Saytın görünən adı (browser title-da çıxır)
+$site_url   = 'localhost:8000';          // Saytın əsas URL-i
+$site_url_2 = 'localhost:8000';          // Chat-in URL-i (eyni domen olarsa eyni qoy)
 
 // Modern PDO connection — runs in parallel with legacy mysql_*
 if (!isset($GLOBALS['pdo'])) {

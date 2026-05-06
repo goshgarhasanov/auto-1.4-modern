@@ -23,7 +23,7 @@ $tarix=$mp["tarix"];
 $q1 = mysql_query("SELECT COUNT(`id`) FROM `users` WHERE `time` > '".$_AUTO['online']."' and `inv` != '3' and `kik`<'".time()."' and banned = '0';");
 $all_room = mysql_result($q1, 0);
 
-$_v->title('Chat.'.$site,'center');
+$_v->title($site, 'center');
 $_v->fsize1('small');
 require("logo1.php");
 $qey = file("file/log/1.dat");
@@ -238,7 +238,7 @@ if($vcxvcvc0!='x' and $vcxvcvc0!='' and  $dsay!='0' and ($vcxvcvc4=='0' or $vcxv
 
 echo "ScriptName: <u><a href=\"license.php?$ref\">auto 1.4</a></u><br/>\n";
 //echo $divide;
-echo "M&#252;ellif: <b>Goshgar Hasanzadeh</b><br/>\n";
+echo "M&#252;ellif: <b class=\"author-name\">Goshgar Hasanzadeh</b><br/>\n";
 //echo "<b>&#169; B&#252;t&#252;n H&#252;quqlar Qorunur</b><br/>\n";
 $_v->divide();
 
