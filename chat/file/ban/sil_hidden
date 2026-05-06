@@ -1,0 +1,151 @@
+<?php
+if ( $row['level'] < 7 )
+{
+echo $xml;
+echo $dtd;
+echo "<wml>\n";
+echo "<card id=\"xeta\" title=\"STOP\">\n";
+echo "<p align=\"center\">\n";
+echo $fsize1;
+echo "Sizin <b>IP-Browser</b> Ban Etmek h&#252;ququnuz yoxdur!<br/>****<br/>\n";
+echo "<a href=\"enter.php?id={$id}&amp;ps={$ps}&amp;ref={$ref}\">Dehliz</a>\n";
+echo $fsize2;
+echo "</p></card></wml>";
+mysql_close( $link );
+exit( );
+}
+$soft = $inf['user_soft'];
+$pid = $inf['id'];
+if ( OPERATOR( $ip ) != "NULL" )
+{
+$reqipcon = "and `user_soft` = '".$soft."'";
+$reqip = "{$HTTP_USER_AGENT}";
+$reqmsg = "Bazadan Sildi ve Telefon Modeli Ban Etdi!";
+$bipinfo = "<u>Operator</u>: ".ucfirst( OPERATOR( $ip ) )."";
+}
+else
+{
+$reqipcon = "";
+$reqip = "IP-BAN";
+$reqmsg = "Bazadan Sildi ve IP Adresi Ban Etdi!";
+$bipinfo = "<u>IP-Adress</u>: <b>{$ip}</b>";
+}
+if ( OPERATOR( $REMOTE_ADDR ) != "NULL" )
+{
+$myipinfo = "<u>Operator</u>: ".ucfirst( OPERATOR( $REMOTE_ADDR ) )."";
+}
+else
+{
+$myipinfo = "<u>IP-Adress</u>: <b>{$REMOTE_ADDR}</b>";
+}
+if ( $u_level < $row['level'] )
+{
+echo $xml;
+echo $dtd;
+echo "<wml>\n";
+echo "<card id=\"ipban\" title=\"IP-Browser\">\n";
+echo "<p align=\"center\">\n";
+echo $fsize1;
+echo "<b>{$pnik}</b>, {$reqmsg}<br/>\n";
+$rnd = rand( 0, 99999999 );
+$today = date( "H:i", mktime( date( "H" ) + $xsat ) );
+$time = time( );
+if ( $whykik != "" )
+{
+$whykikk = ", (Sebeb: <u>{$whykik}</u>.)";
+}
+mysql_query( "UPDATE `conf` SET ipp = '".$ip."', soft = '".$soft."', son = '';" );
+mysql_query( "INSERT INTO bannlist SET ip = '".$ip."', soft = '".$soft."', user = '".$pnik."', moder = '".$user."', sebeb = '".$whykik."'" );
+$online = time( ) + $vaxt;
+mysql_query( "UPDATE `users` SET `time` = '".$online."', `room` = '".$otaq."' WHERE `id` = '7';" );
+mysql_query( "UPDATE `users` SET banned = '2', `time` = '".time( )."' WHERE `id` = '".$pid."';" );
+mysql_query( "UPDATE `users` SET `time` = '".time( )."', `banned` = '3' WHERE  `user_ip` = '".$ip."' {$reqipcon}  and  `banned` = '0'';" );
+$rnd = rand( 0, 99999999 );
+$today = date( "H:i", mktime( date( "H" ) + $xsat ) );
+$time = time( );
+$txt = "<b>{$user}</b>, \"<u>{$pnik}</u>\" leqebli istifade&#231;ini <b><u>{$reqmsg}</u></b>{$whykikk}\n";
+$num = 0;
+while ( $num <= 9 )
+{
+$rooms = "room".$num;
+mysql_query( "Insert into {$rooms} set klu4= '".$rnd."', time='".$today."', who='".$xeberci."', message='".$txt."', id='".$time."', towhom='1', hid='1', usid='7'" );
+++$num;
+}
+if ( $otaq < 10 )
+{
+$room = "room".$otaq;
+mysql_query( "Select * from {$room} WHERE usid='".$pid."' LIMIT 1" );
+if ( mysql_affected_rows( ) != 0 )
+{
+$silinen = @mysql_query( @"Select `time`,`who`,`message` from `{$room}`  WHERE `usid`='".@$pid."' ORDER BY `id` DESC LIMIT 0 , 30" );
+@$save = @fopen( @"file/control/6/9".@$pid.".dat", "a+" );
+$date = date( "d.m.y [H:i]", mktime( date( "H" ) + $xsat ) );
+while ( $dum = mysql_fetch_array( $silinen ) )
+{
+$vax = $dum['time'];
+$kim = $dum['who'];
+$messages = $dum['message'];
+$qeyd .= "".base64_encode( "{$kim} {$vax} {$messages} " )."\n";
+}
+$qeyd .= "".base64_encode( "Leqebi: <b>{$pnik}</b><br/>ID N&#246;mresi: <b>{$pid}</b><br/>{$bipinfo}<br/><u>Browser</u>: <i>{$soft}</i><br/>-------<br/><u>Ban Eden</u>: <b>{$user}</b><br/>{$myipinfo}<b/><br/><u>Browser</u>: <i>{$HTTP_USER_AGENT}</i><br/>******<br/> <b>Otaqda yazd&#305;&#287;&#305; son mesajlar</b><br/>****" )."\n";
+@fwrite( @$save, @"{$qeyd}" );
+@fflush( @$save );
+@fclose( @$save );
+}
+mysql_query( "delete from {$room} WHERE usid = '".$pid."'" );
+}
+else
+{
+$silinen = @mysql_query( @"Select * from mesaj WHERE idwho = '".@$pid."' or idtowhom = '".@$pid."' order by time desc limit 0,30" );
+if ( mysql_affected_rows( ) != 0 )
+{
+@$save = @fopen( @"file/control/6/9".@$pid.".dat", "a+" );
+while ( $dum = mysql_fetch_array( $silinen ) )
+{
+$klu4 = $dum['klu4'];
+$kim = $dum['who'];
+$kime = $dum['towhom'];
+$messages = $dum['message'];
+$qeyd .= "".base64_encode( "{$kim}&#187;{$kime}: {$messages}" )."\n";
+mysql_query( "delete from mesaj WHERE klu4 = '".$klu4."'" );
+}
+$qeyd .= "".base64_encode( "Leqebi: <b>{$pnik}</b><br/>ID N&#246;mresi: <b>{$pid}</b><br/>{$bipinfo}<br/><u>Browser</u>: <i>{$soft}</i><br/>-------<br/><u>Ban Eden</u>: <b>{$user}</b><br/>{$myipinfo}<b/><br/><u>Browser</u>: <i>{$HTTP_USER_AGENT}</i><br/>******<br/> <b>Mesajda yazd&#305;&#287;&#305; son s&#246;zler</b><br/>****" )."\n";
+@fwrite( @$save, @"{$qeyd}" );
+@fflush( @$save );
+@fclose( @$save );
+}
+}
+@$save = @fopen( "file/control/6.dat", "a+" );
+$date = date( "d.m.y [H:i]", mktime( date( "H" ) + $xsat ) );
+$qeyd = "".base64_encode( "<u>{$user}</u> - \"<b>{$pnik}</b>\" (ID=<u>{$pid}</u>): <b>IP-Soft+Del</b> - [<u>{$otaqadi}</u>]{$whykikk} {$date}" )."\n";
+@fwrite( @$save, @"{$qeyd}" );
+@fflush( @$save );
+@fclose( @$save );
+}
+else
+{
+echo $xml;
+echo $dtd;
+echo "<wml>\n";
+echo "<card id=\"olmaz\" title=\"Bu Olmaz\">\n";
+echo "<p align=\"center\">\n";
+echo $fsize1;
+$levelselect = @mysql_query( @"Select name from levels where level='".@$u_level."'" );
+$levels = @mysql_fetch_array( @$levelselect );
+$levname = $levels['name'];
+echo "Sizin  \"<b>".$levname."</b>\" r&#252;tbesinde olan &#350;exslerin,<br/> <u>Telefon Model</u>-ini Ban etmek h&#252;ququnuz yoxdur!<br/>\n";
+}
+echo "----<br/>";
+if ( $rm != "" )
+{
+echo "<a href=\"chat.php?id={$id}&amp;ps={$ps}&amp;rm={$rm}&amp;ref={$ref}\">&#199;ata Qay&#305;t</a>\n";
+}
+else
+{
+echo "<a href=\"admin.php?id={$id}&amp;ps={$ps}&amp;ref={$ref}\">{$pname}</a> \n";
+}
+echo $fsize2;
+echo "</p>\n";
+echo "</card>\n";
+echo "</wml>\n";
+?>

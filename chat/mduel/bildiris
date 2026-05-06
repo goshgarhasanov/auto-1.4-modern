@@ -1,0 +1,118 @@
+<?php
+$del_sql = mysql_query("SELECT * FROM `mduel` WHERE `devet` = '2' and `dtime` < ".time().";");
+while($up = mysql_fetch_array($del_sql))
+{
+$gpass = $up['gpass'];
+$oykim = $up['dkim'];
+$oykimle = $up['dkimle'];
+$oytime = $up['dtime'];
+$oydk_bal = $up['dk_bal'];
+$oydkl_bal = $up['dkl_bal'];
+$oydk_ses = $up['dk_ses'];
+$oydkl_ses = $up['dkl_ses'];
+$oyddate = $up['ddate'];
+$umbal1 = $oydk_ses + $oydkl_ses;
+$qbal = $umbal1 * 10;
+
+if ( $oydk_ses > $oydkl_ses ){
+$off = "0";
+}elseif ( $oydk_ses < $oydkl_ses ){
+$off = "1";
+}else {
+$off = "2";}
+
+$umbal1 = $oydk_ses + $oydkl_ses;
+$qbal = $umbal1 * 10;
+
+$papka = "mduel/arxiv/".$oykimle."";
+if ( !is_dir( $papka ) ) {
+mkdir( $papka );
+chmod( $papka , 0777);
+include ("mduel/kimle");
+} else {
+include ("mduel/kimle");
+}
+
+$papka2 = "mduel/arxiv/".$oykim."";
+if ( !is_dir( $papka2 ) ) {
+mkdir( $papka2 );
+chmod( $papka2 , 0777);
+include ("mduel/kim");
+} else {
+include ("mduel/kim");
+}
+
+if ( $oydk_ses > $oydkl_ses ) {
+$qus = mysql_query ("SELECT user FROM users WHERE id = '".$oykim."'");
+$quser = mysql_result ($qus,0);
+///qalibe mektub
+$data = date("d.m.Y |H:i", mktime(date ("H")+1));
+                $kol = rand(0,99999999);
+                $time = time();
+$message = "Siz Duelde qalib geldiniz ve <b>$qbal</b> bal qazand&#305;z...";
+mysql_query("Insert into zapiski set klu4='".$kol."', who ='Sistem', idwho ='0', message = '".$message."', towhom = '".$quser."', idtowhom = '".$oykim."', time = '".$time."', readd = '0', topic = 'Sistem', date='".$data."', insend='1', ininc='1'");
+///son
+///uduzana mektub
+$mus = mysql_query ("SELECT user FROM users WHERE id = '".$oykimle."'");
+$muser = mysql_result ($mus,0);
+$message2 = "Siz Duelde me&#287;lug oldunuz ve <b>$qbal</b> bal reqibe verildi...";
+mysql_query("Insert into zapiski set klu4='".$kol."', who ='Sistem', idwho ='0', message = '".$message2."', towhom = '".$muser."', idtowhom = '".$oykimle."', time = '".$time."', readd = '0', topic = 'Sistem', date='".$data."', insend='1', ininc='1'");
+///son
+$qb = mysql_query ("SELECT bal FROM users WHERE id = '".$oykim."'");
+$usbal = mysql_result ($qb,0);
+$ubal = $usbal + $qbal;
+mysql_query ("UPDATE users SET bal = '".$ubal."' WHERE id = '".$oykim."'");
+} elseif ( $oydk_ses < $oydkl_ses ) {
+$qus = mysql_query ("SELECT user FROM users WHERE id = '".$oykimle."'");
+$quser = mysql_result ($qus,0);
+///qalibe mektub
+$data = date("d.m.Y |H:i", mktime(date ("H")+1));
+                $kol = rand(0,99999999);
+                $time = time();
+$message = "Siz Duelde qalib geldiniz ve <b>$qbal</b> bal qazand&#305;z...";
+mysql_query("Insert into zapiski set klu4='".$kol."', who ='Sistem', idwho ='0', message = '".$message."', towhom = '".$quser."', idtowhom = '".$oykimle."', time = '".$time."', readd = '0', topic = 'Sistem', date='".$data."', insend='1', ininc='1'");
+///son
+//uduzana mektub
+$mus = mysql_query ("SELECT user FROM users WHERE id = '".$oykim."'");
+$muser = mysql_result ($mus,0);
+$message2 = "Siz Duelde me&#287;lug oldunuz ve <b>$qbal</b> bal reqibe verildi...";
+mysql_query("Insert into zapiski set klu4='".$kol."', who ='Sistem', idwho ='0', message = '".$message2."', towhom = '".$muser."', idtowhom = '".$oykim."', time = '".$time."', readd = '0', topic = 'Sistem', date='".$data."', insend='1', ininc='1'");
+///son
+$qb = mysql_query ("SELECT bal FROM users WHERE id = '".$oykimle."'");
+$usbal = mysql_result ($qb,0);
+$ubal = $usbal + $qbal;
+mysql_query ("UPDATE users SET bal = '".$ubal."' WHERE id = '".$oykimle."'");
+} else {
+$ybal = $qbal / 2 ;
+$son_bal = round($ybal, 0);
+///qalibe kime mektub
+$data = date("d.m.Y |H:i", mktime(date ("H")+1));
+$pus = mysql_query ("SELECT `user` FROM `users` WHERE `id` = '".$oykim."'");
+$npus = mysql_result ($pus, 0);
+                $kol = rand(0,99999999);
+                $time = time();
+$message = "Duel oyunu he&#231;-he&#231;e qutard&#305;. &#220;mumi <b>$qbal</b> bal yar&#305;ya b&#246;l&#305;nerek size <u>$son_bal</u> bal verildi...";
+mysql_query("Insert into zapiski set klu4='".$kol."', who ='Sistem', idwho ='0', message = '".$message."', towhom = '".$npus."', idtowhom = '".$oykim."', time = '".$time."', readd = '0', topic = 'Sistem', date='".$data."', insend='1', ininc='1'");
+///son
+///ikinci qlib
+$pus2 = mysql_query ("SELECT `user` FROM `users` WHERE `id` = '".$oykimle."'");
+$npus2 = mysql_result ($pus2, 0);
+                $kol = rand(0,99999999);
+                $time = time();
+$message = "Duel oyunu he&#231;-he&#231;e qutard&#305;. &#220;mumi <b>$qbal</b> bal yar&#305;ya b&#246;l&#305;nerek size <u>$son_bal</u> bal verildi...";
+mysql_query("Insert into zapiski set klu4='".$kol."', who ='Sistem', idwho ='0', message = '".$message."', towhom = '".$npus2."', idtowhom = '".$oykimle."', time = '".$time."', readd = '0', topic = 'Sistem', date='".$data."', insend='1', ininc='1'");
+///son
+$qb3 = mysql_query ("SELECT bal FROM users WHERE id = '".$oykim."'");
+$usbal3 = mysql_result ($qb3,0);
+$okbal3 = $usbal3 + $son_bal;
+mysql_query ("UPDATE users SET bal = '".$okbal3."' WHERE id = '".$oykim."'");
+
+$qb2 = mysql_query ("SELECT bal FROM users WHERE id = '".$oykimle."'");
+$usbal2 = mysql_result ($qb2,0);
+$okbal = $usbal2 + $son_bal;
+mysql_query ("UPDATE users SET bal = '".$okbal."' WHERE id = '".$oykimle."'");
+}
+mysql_query ("DELETE FROM mduel WHERE gpass = '".$gpass."'");
+mysql_query ("DELETE FROM md_ses WHERE gpass = '".$gpass."'");
+}
+?>

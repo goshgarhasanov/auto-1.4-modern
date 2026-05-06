@@ -5,93 +5,75 @@ Klassik **auto 1.4** Azərbaycan dilli WAP çat skriptinin müasir HTML5 standar
 ## Müəlliflər
 
 - **Orijinal:** ChatN!ck (auto 1.4)
-- **Modern Edition:** Goshgar Hasanzadeh
+- **Modern Edition:** Goshgar Hasanzadeh ([GitHub](https://github.com/goshgarhasanov))
 
 ## Repo Strukturu
 
 ```
 auto1.4/
-├── chat/           # Legacy auto 1.4 — modernize edilmiş (HTML5, bcrypt, PDO)
-├── chat-app/       # Sıfırdan yenidən yazılmış modern PHP 8.3 / Slim 4 stack
-├── chat2/          # Köhnə ay_chat 1.2 referans variantı (geliştirme yapmıyoruz)
-└── sql.sql         # MySQL/MariaDB sxema və başlanğıc məlumatları
+├── chat/        # auto 1.4 — modernize edilmiş ana proje
+├── chat2/       # ay_chat 1.2 referans (geliştirme yapılmıyor)
+└── sql.sql      # MariaDB şema və başlanğıc məlumatları
 ```
 
-### `chat/` — Legacy Modernized
+## Modernizasiya nələri əhatə edir
 
-Orijinal **auto 1.4** kodu, aşağıdakılar əlavə edilmiş:
-- `<?xml WML>` → modern HTML5 doctype
-- `vista1/vista2/vista3/win` çoxlu skin → tək `modern.css` mövzusu
-- `mysql_*` çağrıları + paralel **PDO** əlaqəsi
-- **Bcrypt** parol heşləməsi (köhnə base64 parollar avtomatik bcrypt-ə keçirilir)
-- `register_globals` dövründən qalan `$HTTP_USER_AGENT` → `$_SERVER` ilə bootstrap
-- HTTP `<?xml>` prologue WML modunda emit edilir, modern modunda emit edilmir
-- Düzgün UTF-8 əlifba dəstəyi
+`chat/` klasöründə əsas dəyişikliklər:
 
-**Servis:**
+- ✅ WML 1.2 çıkışı → modern **HTML5**
+- ✅ Çoxlu skin (vista1/vista2/vista3/wml) → tək **modern** mövzu
+- ✅ Köhnə `mysql_*` əlavə olaraq paralel **PDO** əlaqəsi
+- ✅ Base64 parol → **Bcrypt** heşləməsi (köhnə parollar avtomatik miqrasiya olunur)
+- ✅ `register_globals` qalığı `$HTTP_USER_AGENT` → `$_SERVER` ilə düzgün bootstrap
+- ✅ Modern, gradient, responsive CSS (`css/modern.css`)
+- ✅ Düzgün UTF-8 əlifba dəstəyi
+- ✅ HTTP `<?xml>` prologue yalnız WML modunda göndərilir
+- ✅ Tüm 181 modul (məsajlaşma, forum, oyunlar, foto albom, admin paneli...) saxlanılıb
+
+## Sistem Tələbləri
+
+- **PHP** 5.6 — 8.3 (tövsiyə olunan 7.4+)
+- **MariaDB** 10.4+ və ya **MySQL** 5.7+
+- **PHP modulları:** mysqli, pdo_mysql, gd, mbstring, curl, openssl, fileinfo
+- **Server:** Apache 2.4+ və ya Nginx (production üçün)
+
+## Kurulum
+
+```bash
+git clone https://github.com/goshgarhasanov/auto-1.4-modern
+cd auto-1.4-modern
+```
+
+### Verilənlər bazası
+```bash
+mysql -uroot -e "CREATE DATABASE chat CHARACTER SET utf8 COLLATE utf8_general_ci"
+mysql -uroot chat < sql.sql
+```
+
+### DB parametrləri
+`chat/BAZA.php` faylında bağlantı parametrlərini düzəlt:
+```php
+define('hostname','localhost');
+define('username','root');
+define('password','');
+define('dbname','chat');
+```
+
+### Çalıştır
 ```bash
 php -S localhost:8000 -t chat
 ```
+Aç: http://localhost:8000
 
-### `chat-app/` — Yeni Modern Stack
+## Geliştirme yol haritası
 
-PHP 8.3 + **Slim 4** + **Twig 3** + **PHP-DI** + **Monolog** + **phpdotenv**.
-
-**Klasör mantığı:** Hexagonal / Clean Architecture
-```
-chat-app/
-├── public/index.php             # front controller
-├── src/
-│   ├── Application/             # Actions (Controller eşdeğeri), Middleware
-│   ├── Domain/                  # User, Auth — pure business logic
-│   └── Infrastructure/          # PDO, Twig, external
-├── templates/                   # Twig
-├── config/                      # routes, dependencies, settings
-└── var/                         # cache, log
-```
-
-**Kurulum:**
-```bash
-cd chat-app
-composer install
-cp .env.example .env
-# .env içindəki DB parametrlərini doldur
-php -S localhost:8002 -t public
-```
-
-### `chat2/` — Referans
-
-Eski WML `ay_chat 1.2` skripti, yalnız tarixi referans olaraq saxlanır. Bu kod üzərində geliştirme yapılmır.
-
-## Verilənlər bazası
-
-MariaDB 10.6+ və ya MySQL 5.7+. Şəma və başlanğıc data `sql.sql`-də.
-
-```bash
-mysql -uroot < sql.sql
-```
-
-İki dəstə də **eyni** `chat` DB-sini paylaşır.
-
-## Tələblər
-
-- PHP 5.6 (legacy `chat/` üçün) — və ya 7.4+
-- PHP 8.2+ (modern `chat-app/` üçün)
-- MariaDB 10.4+ / MySQL 5.7+
-- Composer (chat-app üçün)
-- Apache 2.4+ / Nginx (production üçün)
-
-## Geliştirme
-
-Hər iki app eyni DB-ni paylaşır, paralel çalışır. `chat-app/` yeni özelliklərin getdiyi yerdir; `chat/` mövcud istifadəçi bazasını qoruyur.
-
-Geliştirme yol haritası:
-1. ✅ Faz 1 — Görsel modernizasiya (chat klasörü, modern.css, HTML5)
-2. ✅ Faz 2 — Backend güvenlik (PDO, bcrypt)
-3. 🚧 Faz 3 — Yeni stack (chat-app — Slim 4)
-4. 📋 Faz 4 — Realtime (WebSocket / SSE)
-5. 📋 Faz 5 — Mobile app / Telegram bot
+- [x] **Faz 1** — Görsel modernizasiya (HTML5, modern.css, gradient)
+- [x] **Faz 2** — Backend güvenlik (PDO, bcrypt, session)
+- [ ] **Faz 3** — UI/UX iyileştirme (Inter font, Lucide icons, dark mode)
+- [ ] **Faz 4** — Real-time messaging (WebSocket / SSE)
+- [ ] **Faz 5** — Mobile responsive deep-pass
+- [ ] **Faz 6** — Telegram bot integrasyon
 
 ## License
 
-Müəllif hüquqları qorunur. Skripti istifadə etmək üçün müəllifdən icazə alınmalıdır. Detalları üçün bax: `chat/license.php`
+Müəllif hüquqları qorunur. Detallar üçün bax: `chat/license.php`

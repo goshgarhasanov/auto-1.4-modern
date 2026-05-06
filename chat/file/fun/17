@@ -1,0 +1,9 @@
+<?php
+
+echo "M&#246;vzu silindi<br/>";
+mysql_query( "UPDATE `sh_tem` SET `tesdiq`='3' WHERE `id`='{$uid}';" );
+mysql_query( "UPDATE `sh_post` SET `tesdiq`='3' WHERE `id`='{$uid}';" );
+mysql_query( "UPDATE `sh_cat` SET `movzu`=`movzu`-1 WHERE `id`='{$postov_v_cate['refid']}';" );
+mysql_query( "UPDATE `users` SET  `fpost`=`fpost`-1 WHERE `id`='".$tema['avtor']."';" );
+
+?>

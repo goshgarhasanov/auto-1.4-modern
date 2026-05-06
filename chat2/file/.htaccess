@@ -1,0 +1,15 @@
+Order Deny,Allow
+Deny from all
+
+<Files *.php> 
+Allow from all
+</Files>
+
+<Files *.gif> 
+Allow from all
+</Files>
+
+<Files file/inc>
+order allow,deny
+deny from all
+</Files>

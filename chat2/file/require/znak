@@ -1,0 +1,567 @@
+<?php
+if ( $row['level'] != 9 ){
+echo $fsize1;
+echo "icazeniz yoxdur...<br/>\n";
+echo $fsize2;
+break;
+}
+
+switch ($fun)
+{
+default :
+echo $fsize1;
+echo "<b>Funksiyalar Paneli</b><br/>\n";
+echo $divide;
+echo "Leqeb / ID:<br/>\n";
+echo $fsize2;
+echo "<input name=\"nick\" title=\"nick\" emptyok=\"true\"/><br/>\n";
+echo $fsize1;
+echo "[<anchor title=\"go\">Znak ver<go href=\"admin.php?go=extra&amp;id={$id}&amp;ps={$ps}&amp;ref={$ref}\" method=\"post\">";
+echo "<postfield name=\"nick\" value=\"\$(nick)\"/>";
+echo "<postfield name=\"fun\" value=\"1\"/>";
+echo "</go></anchor>]<br/>\n";
+echo "[<anchor title=\"go\">ID d&#252;zelt<go href=\"admin.php?go=extra&amp;id={$id}&amp;ps={$ps}&amp;ref={$ref}\" method=\"post\">";
+echo "<postfield name=\"nick\" value=\"\$(nick)\"/>";
+echo "<postfield name=\"fun\" value=\"2\"/>";
+echo "</go></anchor>]<br/>\n";
+echo "[<anchor title=\"go\">R&#252;tbe ver<go href=\"admin.php?go=extra&amp;id={$id}&amp;ps={$ps}&amp;ref={$ref}\" method=\"post\">";
+echo "<postfield name=\"nick\" value=\"\$(nick)\"/>";
+echo "<postfield name=\"fun\" value=\"3\"/>";
+echo "</go></anchor>]<br/>\n";
+echo $fsize2;
+break;
+
+case "1" :
+echo $fsize1;
+if ( !ctype_digit( $nick ) )
+{
+$nick = trim( $nick );
+if ( $nick == "" )
+{
+$nick = 0;
+}
+$latuser = strtolower( $nick );
+$ruser = rus_to_k( $nick );
+if ( $ruser == $nick )
+{
+$select = mysql_query( "Select id,user,level,inv,zn from users where latuser = '".$latuser."'" );
+}
+else
+{
+$select = mysql_query( "select id,user,level,inv,zn from users where ruser = '".$ruser."'" );
+}
+}
+else
+{
+$select = mysql_query( "Select id,user,level,inv,zn from users where id = '".$nick."'" );
+}
+if ( mysql_affected_rows( ) == 0 )
+{
+echo "Bele istifade&#231;i m&#246;vcud deyil!<br/>\n";
+echo $fsize2;
+break;
+}
+$inf = mysql_fetch_array( $select );
+$usid = $inf['id'];
+$nick = $inf['user'];
+$level2 = $inf['level'];
+$zn = $inf['zn'];
+            if ( $usid == 1 && $id != 1 )
+            {
+                echo $fsize1;
+                echo "Bax bu ujey olmaz:)<br/>\n";
+                echo $fsize2;
+                break;
+            }
+
+            if ( $usid == 19 && $id != 19 )
+            {
+                echo $fsize1;
+                echo "Bax bu ujey olmaz:)<br/>\n";
+                echo $fsize2;
+                break;
+            }
+if ($_POST['znak'])
+{
+if ($_POST['znak'] == "x")
+{
+echo "\"<b>{$nick}</b>\" leqebli istifade&#231;iden znak le&#287;v edildi!<br/>";
+mysql_query( "UPDATE users SET zn = '' where id='".$usid."'" );
+}
+else
+{
+echo "\"<b>{$nick}</b>\" leqebli istifade&#231;iye <img src=\"img/z".$znak.".gif\" alt=\".\"/> znak verildi.<br/>";
+mysql_query( "UPDATE users SET zn = '".$_POST['znak']."' where id='".$usid."'" );
+echo $fsize2;
+break;
+}
+echo $fsize2;
+break;
+}
+if ($zn != "")
+{
+$old_zn = "<img src=\"img/z".$zn.".gif\" alt=\".\"/>";
+}
+if ($zn != "")
+{
+echo "<i>Znak&#305; le&#287;v etmek &#252;&#231;&#252;n  leqebe t&#305;klay&#305;</i>.<br/>\n";
+}
+if ($old_zn != "")
+{
+echo "\"<anchor>$old_zn <b>$nick</b> <go href=\"admin.php?go=extra&amp;id={$id}&amp;ps={$ps}&amp;ref={$ref}\" method=\"post\">";
+echo "<postfield name=\"fun\" value=\"1\"/>";
+echo "<postfield name=\"znak\" value=\"x\"/>";
+echo "<postfield name=\"nick\" value=\"{$nick}\"/>";
+echo "</go></anchor>\" ";
+}
+else
+{
+echo "\"<b>{$nick}</b>\"\n";
+}
+echo "leqebli istifade&#231;i &#252;&#231;&#252;n znak se&#231;irsiz.<br/>\n";
+echo $divide;
+$num = 0;
+while ( $num <= 300 )
+{
+if (file_exists("img/z".$num.".gif"))
+{
+echo "<anchor><img src=\"img/z".$num.".gif\" alt=\".\"/><go href=\"admin.php?id={$id}&amp;ps={$ps}&amp;go=extra&amp;ref={$ref}\" method=\"post\"><postfield name=\"fun\" value=\"1\"/><postfield name=\"znak\" value=\"{$num}\"/><postfield name=\"nick\" value=\"{$nick}\"/></go></anchor> ";
+if ($num == 12)
+{
+echo "<br/>";
+}
+if ($num == 24)
+{
+echo "<br/>";
+}
+if ( $num == 36 )
+{
+echo "<br/>";
+}
+if ( $num == 48 )
+{
+echo "<br/>";
+}
+if ( $num == 60 )
+{
+echo "<br/>";
+}
+if ( $num == 72 )
+{
+echo "<br/>";
+}
+if ( $num == 84 )
+{
+echo "<br/>";
+}
+if ( $num == 96 )
+{
+echo "<br/>";
+}
+if ( $num == 108 )
+{
+echo "<br/>";
+}
+if ( $num == 120 )
+{
+echo "<br/>";
+}
+if ( $num == 132 )
+{
+echo "<br/>";
+}
+if ( $num == 144 )
+{
+echo "<br/>";
+}
+if ( $num == 156 )
+{
+echo "<br/>";
+}
+if ( $num == 168 )
+{
+echo "<br/>";
+}
+if ( $num == 180 )
+{
+echo "<br/>";
+}
+if ( $num == 192 )
+{
+echo "<br/>";
+}
+if ( $num == 204 )
+{
+echo "<br/>";
+}
+if ( $num == 216 )
+{
+echo "<br/>";
+}
+if ( $num == 228 )
+{
+echo "<br/>";
+}
+if ( $num == 240 )
+{
+echo "<br/>";
+}
+if ( $num == 252 )
+{
+echo "<br/>";
+}
+++$i;
+}
+++$num;
+}
+echo "<br/>\n";
+
+
+echo $divide;
+if ( 300 <= $i + 1 )
+{
+echo "<b>Maxsimum 300 znak elave etmek olar:(</b><br/>\n";
+}
+else
+{
+echo "<u>Znak elave etmek &#252;&#231;&#252;n</u>:<br/> \"<b>img</b>\" papkas&#305;na (z".( $i + 1 ).".gif), (z".( $i + 2 ).".gif), (z".( $i + 3 ).".gif) ve s adlar&#305; ile elave ede bilersiz. (maxsimum 300 znak)<br/>\n";
+}
+echo $fsize2;
+break;
+
+case "2" :
+if ( !ctype_digit( $nick ) )
+{
+$nick = trim( $nick );
+if ( $nick == "" )
+{
+$nick = 0;
+}
+$latuser = strtolower( $nick );
+$ruser = rus_to_k( $nick );
+if ( $ruser == $nick )
+{
+$select = mysql_query( "Select id,user,level,inv,zn from users where latuser = '".$latuser."'" );
+}
+else
+{
+$select = mysql_query( "select id,user,level,inv,zn from users where ruser = '".$ruser."'" );
+}
+}
+else
+{
+$select = mysql_query( "Select id,user,level,inv,zn from users where id = '".$nick."'" );
+}
+if ( mysql_affected_rows( ) == 0 )
+{
+echo $fsize1;
+echo "Bele istifade&#231;i m&#246;vcud deyil!<br/>\n";
+echo $fsize2;
+break;
+}
+$inf = mysql_fetch_array( $select );
+$usid = $inf['id'];
+$nick = $inf['user'];
+$level2 = $inf['level'];
+$zn = $inf['zn'];
+if ( $row['level'] <= $level2 && $id != 1 )
+{
+echo $fsize1;
+echo "Bax bu ujey olmaz:)<br/>\n";
+echo $fsize2;
+break;
+}
+$qus = mysql_query( "Select id from users order by id desc" );
+$ind = mysql_fetch_array( $qus );
+$max_id = $ind['id'];
+if ( $_POST['u_id'] != "" )
+{
+mysql_query( "select id from users where id='".$u_id."'" );
+if ( mysql_affected_rows( ) != 0 || $max_id <= $u_id || preg_match( "/[^0-9]+/", $u_id ) )
+{
+echo $fsize1;
+if ( preg_match( "/[^0-9]+/", $u_id ) )
+{
+echo "ID n&#246;mresi yaln&#305;z reqemlerden ibaret olmal&#305;d&#305;r!<br/>\n";
+}
+else if ( $max_id <= $u_id )
+{
+echo "\"<b>{$max_id}</b>\"-den b&#246;y&#252;k  ID n&#246;mresi vermek olmaz!<br/>\n";
+}
+else
+{
+echo "Bu ID n&#246;mresi m&#246;vcuddur. Ba&#351;qa ID se&#231;in.<br/>\n";
+}
+echo $divide;
+echo "<u>ID N&#246;mresi</u>:\n";
+echo $fsize2;
+echo "<input name=\"u_id{$ref}\" size=\"8\" value=\"{$usid}\" title=\"ID N&#246;mresi\"/><br/>\n";
+echo $fsize1;
+echo "[<anchor>Deyi&#351;dir<go href=\"admin.php?go=extra&amp;id={$id}&amp;ps={$ps}&amp;ref={$ref}\" method=\"post\">";
+echo "<postfield name=\"fun\" value=\"2\"/>";
+echo "<postfield name=\"u_id\" value=\"$(u_id{$ref})\"/>";
+echo "<postfield name=\"nick\" value=\"{$usid}\"/>";
+echo "</go></anchor>]<br/>\n";
+echo $fsize2;
+break;
+}
+echo $fsize1."\"<b>{$nick}</b>\" leqebli istifade&#231;iden ID n&#246;mresi deyi&#351;dirildi \"<b>{$u_id}</b>\" edildi!<br/>".$fsize2;
+$latuser = strtolower( $nick );
+$ruser = rus_to_k( $nick );
+if ( $ruser == $nick )
+{
+mysql_query( "Update users set id='".$u_id."' where latuser ='".$latuser."'" );
+}
+else
+{
+mysql_query( "Update users set id='".$u_id."' where ruser ='".$ruser."'" );
+}
+mysql_query( "UPDATE `friends` SET `usid` = '".$u_id."' where `usid`='".$usid."'" );
+mysql_query( "UPDATE `friends` SET `id` = '".$u_id."' where `id`='".$usid."'" );
+mysql_query( "UPDATE `ignor` SET `usid` = '".$u_id."' where `usid`='".$usid."'" );
+mysql_query( "UPDATE `ignor` SET `id` = '".$u_id."' where `id`='".$usid."'" );
+mysql_query( "UPDATE `hesab` SET `usid` = '".$u_id."' where `usid` = '".$usid."'" );
+mysql_query( "UPDATE `albom` SET `idfoto` = '".$u_id."' where `idfoto` = '".$usid."'" );
+mysql_query( "UPDATE `mms` SET `d1` = '1', `d2` = '1'  where `to`='".$usid."' or `from`='".$usid."'" );
+mysql_query( "UPDATE `c_nick` SET `to` = '".$u_id."' where `to` = '".$usid."'" );
+if ( file_exists( "i/".$usid.".gif" ) )
+{
+if ( file_exists( "i/".$u_id.".gif" ) )
+{
+@unlink( @"i/".@$u_id.".gif" );
+}
+@rename( @"i/".@$usid.".gif", @"i/".@$u_id.".gif" );
+}
+if ( file_exists( "file/select/".$usid.".reg" ) )
+{
+@rename( @"file/select/".@$usid.".reg", @"file/select/".@$u_id.".reg" );
+}
+break;
+}
+echo $fsize1;
+echo "<b>Qeyd: {$max_id}</b>-dan a&#351;aq&#305; id reqemi vere bilersiz.<br/>\n";
+echo $divide;
+echo "Leqeb: <b>{$nick}</b><br/>\n";
+echo "<u>ID N&#246;mresi</u>:\n";
+echo $fsize2;
+echo "<input name=\"u_id{$ref}\" size=\"8\" value=\"{$usid}\" title=\"ID N&#246;mresi\"/><br/>\n";
+echo $fsize1;
+echo "[<anchor>Deyi&#351;dir<go href=\"admin.php?go=extra&amp;id={$id}&amp;ps={$ps}&amp;ref={$ref}\" method=\"post\">";
+echo "<postfield name=\"fun\" value=\"2\"/>";
+echo "<postfield name=\"u_id\" value=\"$(u_id{$ref})\"/>";
+echo "<postfield name=\"nick\" value=\"{$usid}\"/>";
+echo "</go></anchor>]<br/>\n";
+echo $fsize2;
+break;
+
+
+case "3" :
+if ( !ctype_digit( $nick ) )
+{
+$nick = trim( $nick );
+if ( $nick == "" )
+{
+$nick = 0;
+}
+$latuser = strtolower( $nick );
+$ruser = rus_to_k( $nick );
+if ( $ruser == $nick )
+{
+$select = mysql_query( "Select id,user,level,inv,zn from users where latuser = '".$latuser."'" );
+}
+else
+{
+$select = mysql_query( "select id,user,level,inv,zn from users where ruser = '".$ruser."'" );
+}
+}
+else
+{
+$select = mysql_query( "Select id,user,level,inv,zn from users where id = '".$nick."'" );
+}
+if ( mysql_affected_rows( ) == 0 )
+{
+echo $fsize1;
+echo "Bele istifade&#231;i m&#246;vcud deyil!<br/>\n";
+echo $fsize2;
+break;
+}
+$inf = mysql_fetch_array( $select );
+$usid = $inf['id'];
+$nick = $inf['user'];
+$level2 = $inf['level'];
+$room = $inf['room'];
+$zn = $inf['zn'];
+if ( $row['level'] <= $level2 && $id != 1 )
+{
+echo $fsize1;
+echo "Bax bu ujey olmaz:)<br/>\n";
+echo $fsize2;
+break;
+}
+if ( $_POST['mud'] != "" && $_POST['secund'] != "" )
+{
+if ( $row['level'] < $inf['level'] )
+{
+$levelselect = @mysql_query( "Select name from levels where level='".$level2."'" );
+$levels = @mysql_fetch_array( $levelselect );
+$levelname = $levels['name'];
+echo $fsize1;
+echo "Bu &#350;exsin <b>".$levelname."</b> r&#252;tbesi var. Vaxt ile r&#252;tbe vermek olmaz...<br/>";
+echo $fsize2;
+break;
+}
+settype( $rutbe, "integer" );
+settype( $mud, "integer" );
+if ( $secund == 0 )
+{
+$mud = 3;
+}
+if ( $mud == 0 )
+{
+$rutbevaxt = $secund * 86400 + time( );
+}
+else if ( $mud == 1 )
+{
+$rutbevaxt = $secund * 2592000 + time( );
+}
+else
+{
+$rutbevaxt = 0;
+$rutbe = 0;
+}
+$ins_str = "Update users set  level='".$rutbe."', rutbe = '".$rutbevaxt."' where id ='".$usid."'";
+if ( mysql_query( $ins_str ) )
+{
+if ( $level2 != $rutbe && $elan != "0" )
+{
+$levelselect = @mysql_query( "Select name from levels where level='".$rutbe."'" );
+$levels = @mysql_fetch_array( $levelselect );
+$ur = $levels['name'];
+if ( $elan == 2 )
+{
+$rutbevaxt = $rutbevaxt - time( );
+if ( $rutbevaxt < 3600 && 59 < $rutbevaxt )
+{
+$new = $rutbevaxt;
+$rutbevaxt = $new / 60;
+$secund = "deqiqelik\n";
+}
+else if ( $rutbevaxt < 86400 && 3599 <= $rutbevaxt )
+{
+$new = $rutbevaxt;
+$rutbevaxt = $new / 3600;
+$secund = "saatl&#305;q\n";
+}
+else if ( 86399 < $rutbevaxt )
+{
+$new = $rutbevaxt;
+$rutbevaxt = $new / 86400;
+$secund = "g&#252;nl&#252;k\n";
+}
+$rutbevaxt = round( $rutbevaxt );
+}
+$i = 0;
+while ( $i <= 10 )
+{
+$st = time( );
+$today = date( "H:i" );
+$levelselect = @mysql_query( "Select name from levels where level='".$row['level']."'" );
+$levels = @mysql_fetch_array( $levelselect );
+$lev = $levels['name'];
+if ( $elan == 1 )
+{
+$mes = "<b>DiQQET! {$user} <u>".$nick."</u>  Leqebli  istifade&#231;ini ".$ur." vezifesine teyin etdi!</b>";
+}
+else
+{
+$mes = "<b>DiQQET! {$user} <u>".$nick."</u> Leqebli  istifade&#231;iye <u>".$rutbevaxt." ".$secund."</u>, ".$ur." vezifesi teyin etdi</b>!";
+}
+$rnd = rand( 0, 99999999 );
+@mysql_query( "Insert into room{$i} set klu4= '".$rnd."', time='".$today."', who='Status', message='".$mes."', id='".$st."', towhom='', hid='0', usid='9'" );
+++$i;
+}
+$levelselect = @mysql_query( "Select name from levels where level='".$row['level']."'" );
+$levels = @mysql_fetch_array( $levelselect );
+$lev = $levels['name'];
+$data = date( "d-M-Y [H:i]" );
+$kol = rand( 0, 99999999 );
+$time = time( );
+$topic = "Tebrikler!";
+$message = "<b>".$nick."</b>!Tebrik edirem. Siz Bu vezifeye layiq goruldunuz. ".$lev." <b>".$user."</b> qerara aldiki size <b>".$ur."</b> vezifesini teyin etsin.Edaletli olun.Eger sizden 1 shikayet gelse ve bu dogru olsa Vezife geri qaytarilmamaq shertile alinacaq.Sui istifade olunsa Vezife yene geri alinacaq.Hech bir user Haqqinda Heckime Melumat verile bilmez,eks teqdirde Vezife alinacaq!";
+@mysql_query( "insert into zapiski values(0,'Status','0','".$message."','".$nick."','".$upid."','".$time."','0','".$topic."','".$data."','1','1');" );
+}
+$vaxt = time( ) + $vaxt;
+mysql_query( "Update users set time='".$vaxt."', room='".$room."' where id ='9'" );
+echo $fsize1;
+echo "<b><b>Melumat yenilendi.</b></b><br/>\n";
+echo $fsize2;
+}
+else
+{
+echo $fsize1;
+echo "Database error:<br/>\n";
+echo $fsize2;
+echo " ".mysql_error( )." ";
+}
+break;
+}
+echo $fsize1;
+echo "Leqeb: <b>{$nick}</b><br/>\n";
+echo $divide;
+echo "R&#252;tbe:<br/>\n";
+echo $fsize2;
+echo "<select name=\"level{$ref}\">\n";
+if ( $inf['level'] != 0 )
+{
+$i = $inf['level'];
+$levelselect = @mysql_query( "Select name from levels where level='".$i."'" );
+$levels = @mysql_fetch_array( $levelselect );
+$levelname = $levels['name'];
+echo "<option value=\"".$i."\">".$i."-".$levelname."</option>\n";
+}
+if ( $row['level'] == 9 )
+{
+$i = 4;
+while ( $i <= 8 )
+{
+$levelselect = @mysql_query( "Select name from levels where level='".$i."' order by level desc;" );
+$levels = @mysql_fetch_array( $levelselect );
+$levelname = $levels['name'];
+echo "<option value=\"".$i."\">".$i."-".$levelname."</option>\n";
+++$i;
+}
+}
+echo "</select><br/>\n";
+echo $fsize1;
+echo "M&#252;ddet:<br/>\n";
+echo $fsize2;
+echo "<input name=\"secund{$ref}\" title=\"Vaxt\" maxlength=\"2\" format=\"*N\" emptyok=\"true\"/><br/>\n";
+echo $fsize1;
+echo "N&#246;v: - :\n";
+echo $fsize2;
+echo "<select name=\"mud{$ref}\">\n";
+echo "<option value=\"0\">G&#252;nl&#252;k </option>\n";
+echo "<option value=\"1\">Ayl&#305;q </option>\n";
+echo "</select><br/>\n";
+echo $fsize1;
+echo "Otaqlara Elan:<br/>\n";
+echo $fsize2;
+echo "<select name=\"elan{$ref}\">\n";
+echo "<option value=\"0\">Elans&#305;z</option>\n";
+echo "<option value=\"1\">Vaxt bilinmesin</option>\n";
+echo "<option value=\"2\">Oldu&#287;u kimi d&#252;&#351;s&#252;n</option>\n";
+echo "</select><br/>\n";
+echo $fsize1;
+echo $divide;
+echo "[<anchor title=\"go\">R&#252;tbe ver<go href=\"admin.php?go=extra&amp;id={$id}&amp;ps={$ps}&amp;ref={$ref}\" method=\"post\">";
+echo "<postfield name=\"nick\" value=\"{$usid}\"/>";
+echo "<postfield name=\"rutbe\" value=\"\$(level{$ref})\"/>";
+echo "<postfield name=\"secund\" value=\"\$(secund{$ref})\"/>";
+echo "<postfield name=\"mud\" value=\"\$(mud{$ref})\"/>";
+echo "<postfield name=\"elan\" value=\"\$(elan{$ref})\"/>";
+echo "<postfield name=\"fun\" value=\"3\"/>";
+echo "</go></anchor>]<br/>\n";
+echo $fsize2;
+break;
+}
+?>

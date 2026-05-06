@@ -1,0 +1,118 @@
+<?php
+
+if ( !$cat || !$pod_cat )
+{
+echo "Daxil olmaq istediyiniz kataloq m&#246;vcut deyil.<br/>----<br/>\n";
+echo "<a href=\"forum.php?{$mygetname}&amp;ref={$ref}\">Forum</a><br/>\n";
+}
+else
+{
+echo "<i><a href=\"forum.php?{$mygetname}&amp;cmd=yeni&amp;cd={$cmd}&amp;uid={$uid}&amp;ref={$ref}\">Yeni M&#246;vzu yarat</a></i><br/>\n";
+echo "----<br/>\n";
+$num = 10;
+@$page = ( integer )$_GET['page'];
+$result00 = mysql_query( "SELECT COUNT(*) FROM `sh_tem` where `cat`='{$uid}' and `tesdiq`='2';" );
+$temp = mysql_fetch_array( $result00 );
+$posts = $temp[0];
+$total = ( $posts - 1 ) / $num + 1;
+$total = intval( $total );
+$page = intval( $page );
+if ( empty( $page ) || $page < 0 )
+{
+$page = 1;
+}
+if ( $total < $page )
+{
+$page = $total;
+}
+$start = $page * $num - $num;
+$tem_q = mysql_query( "SELECT * FROM `sh_tem` WHERE `cat`='{$uid}' and `tesdiq`='2' ORDER BY `time` DESC LIMIT {$start},{$num};" );
+if ( $posts != 0 )
+{
+while ( $tema = mysql_fetch_array( $tem_q ) )
+{
+$posl_post = mysql_fetch_array( mysql_query( "SELECT * FROM `sh_post` WHERE `tema`='{$tema['id']}' ORDER BY `date` DESC;" ) );
+$postov = mysql_num_rows( mysql_query( "SELECT * FROM `sh_post` WHERE `tema`='{$tema['id']}' ORDER BY `date` DESC;" ) );
+$us_q = mysql_query( "SELECT * FROM `users` WHERE `id`='{$posl_post['avtor']}';" );
+$user_avtor = mysql_fetch_array( $us_q );
+$ddunen = date( "d.m.Y", mktime( date( "H" ) - 24 ) );
+$posl_post['date'] = str_replace( $ddunen, "D&#252;nen", $posl_post['date'] );
+$posl_post['date'] = str_replace( date( "d.m.Y" ), "Bu g&#252;n", $posl_post['date'] );
+if ( $tema['close'] == 1 )
+{
+echo "<img src=\"img/lock.gif\" alt=\"[X]\"/>\n";
+}
+echo ( "<a href=\"forum.php?{$mygetname}&amp;cmd=4&amp;uid={$tema['id']}&amp;ref={$ref}\">{$tema['name']}</a> (".( $postov - 1 ) ).") [<u>{$posl_post['date']}</u>]\n";
+if ( mysql_num_rows( $us_q ) == 0 )
+{
+echo " <b>Silinib</b>.{$posl_post['avtor']}<br/>";
+}
+else
+{
+echo " <b>{$user_avtor['user']}</b><br/>\n";
+}
+}
+$url_for_pstr = "forum.php?{$mygetname}&amp;cmd=3&amp;uid={$uid}&amp;page=";
+if ( 0 < $page - 5 )
+{
+$page5left = ( ( " <a href=\"".$url_for_pstr.( $page - 5 ) )."&amp;ref={$ref}\">".( $page - 5 ) )."</a> | ";
+}
+if ( 0 < $page - 4 )
+{
+$page4left = ( ( " <a href=\"".$url_for_pstr.( $page - 4 ) )."&amp;ref={$ref}\">".( $page - 4 ) )."</a> | ";
+}
+if ( 0 < $page - 3 )
+{
+$page3left = ( ( " <a href=\"".$url_for_pstr.( $page - 3 ) )."&amp;ref={$ref}\">".( $page - 3 ) )."</a> | ";
+}
+if ( 0 < $page - 2 )
+{
+$page2left = ( ( " <a href=\"".$url_for_pstr.( $page - 2 ) )."&amp;ref={$ref}\">".( $page - 2 ) )."</a> | ";
+}
+if ( 0 < $page - 1 )
+{
+$page1left = ( ( " <a href=\"".$url_for_pstr.( $page - 1 ) )."&amp;ref={$ref}\">".( $page - 1 ) )."</a> | ";
+}
+if ( $page + 5 <= $total )
+{
+$page5right = ( ( " | <a href=\"".$url_for_pstr.( $page + 5 ) )."&amp;ref={$ref}\">".( $page + 5 ) )."</a>";
+}
+if ( $page + 4 <= $total )
+{
+$page4right = ( ( " | <a href=\"".$url_for_pstr.( $page + 4 ) )."&amp;ref={$ref}\">".( $page + 4 ) )."</a>";
+}
+if ( $page + 3 <= $total )
+{
+$page3right = ( ( " | <a href=\"".$url_for_pstr.( $page + 3 ) )."&amp;ref={$ref}\">".( $page + 3 ) )."</a>";
+}
+if ( $page + 2 <= $total )
+{
+$page2right = ( ( " | <a href=\"".$url_for_pstr.( $page + 2 ) )."&amp;ref={$ref}\">".( $page + 2 ) )."</a>";
+}
+if ( $page + 1 <= $total )
+{
+$page1right = ( ( " | <a href=\"".$url_for_pstr.( $page + 1 ) )."&amp;ref={$ref}\">".( $page + 1 ) )."</a>";
+}
+if ( 0 < $page - 1 )
+{
+$nazad = ( "<a href=\"".$url_for_pstr.( $page - 1 ) )."&amp;ref={$ref}\">Evvelki</a>";
+}
+if ( $page + 1 <= $total )
+{
+$vpered = ( "<a href=\"".$url_for_pstr.( $page + 1 ) )."&amp;ref={$ref}\">Sonrak&#305;</a>";
+}
+if ( 1 < $total )
+{
+Error_Reporting( E_ALL & ~E_NOTICE );
+echo $pervpage.$page5left.$page4left.$page3left.$page2left.$page1left."<b>".$page."</b>".$page1right.$page2right.$page3right.$page4right.$page5right.$nextpage."<br/>";
+}
+echo "----<br/>\n";
+}
+else
+{
+echo "Bu Kataloqda he&#231;bir M&#246;vzu yoxdur.<br/>----<br/>\n";
+}
+echo "<a href=\"forum.php?{$mygetname}&amp;ref={$ref}\">Forum</a>&#0187;\n";
+echo "<a href=\"forum.php?{$mygetname}&amp;cmd=2&amp;uid={$cat['id']}&amp;ref={$ref}\">{$cat['name']}</a><br/>\n";
+}
+?>

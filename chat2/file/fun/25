@@ -1,0 +1,156 @@
+<?php
+
+$key = $_GET['key'];
+$q = mysql_query( "SELECT * FROM `albom` WHERE `id` = '".$key."';" );
+if (mysql_affected_rows() == 0)
+{
+echo "<card title=\"Xeta\">\n";
+echo "<p align=\"center\">\n";
+echo $fsize1;
+echo "<i>$key &#350;ekil Tap&#305;lmad&#305;</i><br/>----<br/>\n";
+}
+else
+{
+$arr = mysql_fetch_array($q);
+$vote = $arr['vote'];
+$photo = $arr['photo'];
+$info = $arr['info'];
+$idfoto = $arr['idfoto'];
+$key = $arr['id'];
+echo "<card title=\"&#350;ekil haqq&#305;nda qeydler\">\n";
+echo "<p>\n";
+echo $fsize1;
+echo "<img src=\"image.php?img=photos/{$idfoto}/{$photo}&amp;size=150\" alt=\".\"/><br/>\n";
+if ( $del != "" && ( $idfoto == $id || $row['level'] == 9 ) )
+{
+@mysql_query( @"delete from `albom_fikir` WHERE `id` = '".@$del."';" );
+}
+if ( 5 <= strlen( $info ) )
+{
+echo "<b>Qeyd</b>: {$info}<br/>\n";
+}
+echo $divide;
+$fikir = $_POST['fikir'];
+if ( 5 <= strlen( $fikir ) )
+{
+require( "file/require/sh_files" );
+$fikir = narmobil( $fikir );
+require( "smile.php" );
+$minpos = 500; $nm = 500;
+for ($j=0;$j<=count($smiles)-1;$j++){
+$tmpp = strpos($fikir,$smiles[$j]);
+if (($tmpp < $minpos)&&($tmpp !== false)){
+$minpos = $tmpp; $nm = $j;};
+};
+if ($minpos !=500){
+$st1 = substr($fikir,0,$minpos+strlen($smiles[$nm]));
+$st2 = substr($fikir,$minpos+strlen($smiles[$nm]),strlen($fikir)-strlen($st1));
+$st1 = str_replace($smiles[$nm],$replaces[$nm],$st1);
+$fikir = $st1.$st2;
+}
+
+unset($smiles);
+unset($replaces);
+
+$pos = mysql_query( "SELECT * FROM `albom_fikir` WHERE `key` = '".$key."' order by `id` desc limit 1;" );
+$son = mysql_fetch_array( $pos );
+$sonusid = $son['usid'];
+if ( $sonusid != $id )
+{
+mysql_query( "Insert into `albom_fikir` set `usid` ='".$id."', `user` ='".$row['user']."', `message` ='".$fikir."', `time` ='".time( )."', `key` ='".$key."';" );
+}
+else
+{
+$error = "<u>Siz bu &#351;ekile fikir bildirmisiniz.</u><br/>\n";
+}
+}
+$q = mysql_query( "SELECT * FROM `albom_fikir` WHERE `key` = '".$key."';" );
+$all = mysql_num_rows( $q );
+if ( !isset( $s ) )
+{
+$s = 1;
+}
+$mx = round( $all / 15 + 0.45 );
+if ( $mx < $s )
+{
+$s = $mx;
+}
+if ( $s == 0 )
+{
+$s = 1;
+}
+$ot = ( $s - 1 ) * 15 + 1;
+$do = $s * 15;
+if ( $ot < $do )
+{
+$do = $all;
+}
+$o = $ot - 1;
+$n = $ot;
+if ( $do == 0 )
+{
+$n = $o;
+}
+$q = mysql_query( "SELECT * FROM `albom_fikir` WHERE `key` = '".$key."' ORDER BY `id` DESC LIMIT {$o},{$do};" );
+if ( $all == 0 )
+{
+echo "<i>Bu &#350;ekile fikir bildiren olmay&#305;b</i>.<br/>";
+}
+else
+{
+echo "<b>&#304;stifade&#231;i Fikirleri...</b><br/>\n";
+echo $divide;
+if ( $error != "" )
+{
+echo $error;
+echo $divide;
+}
+while ( $inf = mysql_fetch_array( $q ) )
+{
+$eid = $inf['id'];
+$usid = $inf['usid'];
+$u_user = $inf['user'];
+$message = $inf['message'];
+echo "<a href=\"inside.php?id={$id}&amp;ps={$ps}&amp;nk={$usid}{$takep}\">{$u_user}</a>&#187; {$message}\n";
+if ( $idfoto == $id )
+{
+echo "[<a href=\"img_a.php?bol=4&amp;id={$id}&amp;ps={$ps}&amp;mov={$mov}&amp;key={$key}&amp;del={$eid}{$takep}\">x</a>]\n";
+}
+else if ( $row['level'] == 9 )
+{
+echo "[<a href=\"img_a.php?bol=4&amp;id={$id}&amp;ps={$ps}&amp;mov={$mov}&amp;key={$key}&amp;del={$eid}{$takep}\">x</a>]\n";
+}
+echo "<br/>\n";
+}
+$next = $s + 1;
+$prev = $s - 1;
+if ( $do < $all || 1 < $s )
+{
+echo $divide;
+}
+if ( $do < $all )
+{
+$ot = ( $next - 1 ) * 15 + 1;
+$do = $next * 15;
+if ( $all < $do )
+{
+$do = $all;
+}
+echo "<a href=\"img_a.php?bol=4&amp;id={$id}&amp;ps={$ps}&amp;key={$key}&amp;mov={$mov}&amp;s={$next}{$takep}\">{$ot}-{$do}&gt;&gt;</a><br/>\n";
+}
+if ( 1 < $s )
+{
+$ot = ( $prev - 1 ) * 15 + 1;
+$do = $prev * 15;
+echo "<a href=\"img_a.php?bol=4&amp;id={$id}&amp;ps={$ps}&amp;key={$key}&amp;mov={$mov}&amp;s={$prev}{$takep}\">&lt;&lt;{$ot}-{$do}</a><br/>\n";
+}
+}
+echo $divide;
+echo "<input name=\"fikir{$ref}\" maxlength=\"600\" title=\"fikir\"/><br/>\n";
+echo "<anchor>Fikir bildir<go href=\"img_a.php?bol=4&amp;id={$id}&amp;ps={$ps}&amp;mov={$mov}&amp;key={$key}{$takep}\" method=\"post\">\n";
+echo "<postfield name=\"fikir\" value=\"$(fikir{$ref})\"/>\n";
+echo "</go></anchor><br/>\n";
+echo $divide;
+echo "<a href=\"img_a.php?bol=1&amp;id={$id}&amp;ps={$ps}&amp;mov={$mov}&amp;fid={$key}{$takep}\">Geri Qay&#305;t</a><br/>\n";
+}
+?>

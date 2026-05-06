@@ -1,0 +1,94 @@
+<?php
+
+if (!file_exists("file/select/".$id.".reg")){
+header("Location: enter.php?id={$id}&ps={$ps}&ref={$ref}");
+exit();
+}
+
+$keys = file("file/select/".$id.".reg");
+$srok = trim($keys[0]);
+$keygens = trim($keys[1]);
+
+$tm = time();
+
+$_SERVER['REQUEST_URI'] = str_ireplace("&", "&amp;", $_SERVER['REQUEST_URI']);
+
+if ($srok < $tm) {
+if (!isset($_POST['keygen'])) {
+echo $xml;
+echo $dtd;
+echo "<wml>\n";
+echo "<head><meta http-equiv=\"Cache-Control\" content=\"no-cache\" forua=\"true\"/></head>\n";
+echo "<card id=\"kod-2\" title=\"G&#252;venlik &#351;ifresi\">\n";
+echo "<p align=\"left\">\n";
+echo $fsize1;
+echo "G&#252;venlik &#351;ifresi: <br/>\n";
+echo $fsize2;
+echo "<input name=\"keygen$ref\" title=\"G&#252;venlik &#351;ifresi\" format=\"*N\" emptyok=\"true\"/><br/>\n";
+echo $fsize1;
+echo "<anchor title=\"go\">Daxil ol<go href=\"".$_SERVER['REQUEST_URI']."\" method=\"post\">\n";
+echo "<postfield name=\"acar\" value=\"$(keygen$ref)\"/>\n";
+echo "<postfield name=\"keygen\" value=\"key\"/>\n";
+echo "</go></anchor>\n";
+print "<br/>****<br/>";
+print "<a href=\"enter.php?id=$id&amp;ps=$ps&amp;ref=$ref\">Dehliz</a><br/>";
+echo $fsize2;
+echo "</p></card></wml>";
+mysql_close( $link );
+exit();
+} else {
+$acar = trim("{$acar}");
+if ($keygens != $acar) {
+echo $xml;
+echo $dtd;
+echo "<wml>\n";
+echo "<head><meta http-equiv=\"Cache-Control\" content=\"no-cache\" forua=\"true\"/></head>\n";
+echo "<card id=\"kod-2x\" title=\"&#350;ifre yanl&#305;&#351;d&#305;r\">\n";
+echo "<p align=\"center\">\n";
+echo $fsize1;
+echo "<b>Daxil etdiyiniz &#351;ifre yanl&#305;&#351;d&#305;r...</b>\n";
+print "<br/>****<br/>";
+print "<a href=\"bal_add.php?id=$id&amp;ps=$ps&amp;ref=$ref\">Geri qay&#305;t</a><br/>";
+echo $fsize2;
+echo "</p></card></wml>";
+mysql_close( $link );
+exit();
+} else {
+echo $xml;
+echo $dtd;
+echo "<wml>\n";
+echo "<head><meta http-equiv=\"Cache-Control\" content=\"no-cache\" forua=\"true\"/></head>\n";
+echo "<card id=\"bpanel\" title=\"Bal Panel\">\n";
+echo "<p align=\"left\">\n";
+echo $fsize1;
+echo "<b>{$row['user']}</b>...\n";
+print "<br/>****<br/>";
+echo $fsize2;
+$newtm = $tm + 120;
+$save = fopen( "file/select/".$id.".reg", "w");
+$qeyd .= "{$newtm}\n";
+$qeyd .= "{$acar}\n";
+fputs($save, $qeyd);
+fclose($save);
+$fi = fopen("file/control/20.dat", "a+");
+$data = date("d-M-y [H:i]" );
+$lst = "".base64_encode("<b><u>".$row['user']."</u></b> Bal Panele Daxil oldu. Vaxt&#305;: {$data},<br/> Onun  ip: {$REMOTE_ADDR}, ve Softu: {$HTTP_USER_AGENT}")."";
+fwrite($fi, "{$lst}\n");
+fflush($fi);
+fclose($fi);
+}}} else {
+echo $xml;
+echo $dtd;
+echo "<wml>\n";
+echo "<head><meta http-equiv=\"Cache-Control\" content=\"no-cache\" forua=\"true\"/></head>\n";
+echo "<card id=\"bpanel\" title=\"Bal Panel\">\n";
+echo "<p align=\"left\">\n";
+$newtm = $tm + 200;
+$save = fopen("file/select/".$id.".reg", "w");
+$qeyd .= "{$newtm}\n";
+$qeyd .= "{$keygens}";
+fputs($save, $qeyd);
+fclose($save);
+}
+
+?>

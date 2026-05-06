@@ -1,0 +1,10 @@
+<?php
+$file = file( "file/dat_folder/forum_confiq.dat" );
+$dat_fdeyer = trim( $file[0] );
+$dat_fbalpost = trim( $file[1] );
+$dat_fkecersiz = trim( $file[2] );
+$dat_sdeyer = trim( $file[3] );
+$dat_sbalpost = trim( $file[4] );
+$dat_skecersiz = trim( $file[5] );
+$dat_ftesdiq = trim( $file[6] );
+?>
