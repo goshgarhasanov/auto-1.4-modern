@@ -1,0 +1,50 @@
+# Dependencies
+chat-app/vendor/
+chat-app/var/cache/*
+chat-app/var/log/*
+!chat-app/var/cache/.gitkeep
+!chat-app/var/log/.gitkeep
+
+# Environment
+.env
+.env.local
+chat-app/.env
+chat-app/.env.local
+
+# Composer
+composer.phar
+composer.lock
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+chat/access.dat
+
+# Runtime / cache
+chat/file/cache/
+chat/tmp/
+
+# User uploads (production data)
+chat/photos/
+chat/file/foto/
+chat/file/sms_foto/
+chat/file/audio/
+chat/file/mms/
+
+# DB dump (büyük, prod data içerebilir — ayrı paylaş)
+# sql.sql  # repo'da kalsın, isteğe bağlı
+
+# PHP
+*.cache
+
+# Backup
+*.bak
+*.orig
