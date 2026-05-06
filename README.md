@@ -98,7 +98,6 @@ php -S localhost:8000 -t chat
 ```
 auto-1.4-modern/
 ├── chat/        # Əsas skript (181 PHP modulu, modernizə edilmiş)
-├── chat2/       # Köhnə ay_chat 1.2 referansı (yalnız müqayisə üçün)
 ├── sql.sql      # MariaDB sxema və başlanğıc məlumatları
 └── README.md    # Bu sənəd
 ```
