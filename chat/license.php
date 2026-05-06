@@ -3,10 +3,10 @@ require("inc.php");
 $link = connect_db();
 $ref = rand(10000, 1000000);
 
-$original_author = "ChatN!ck";
+$original_author = "Goshgar Hasanzadeh";
 $modern_author   = "Goshgar Hasanzadeh";
 $github          = "Goshgar Hasanzadeh";
-$author          = $modern_author;
+$author          = "Goshgar Hasanzadeh";
 $version         = "auto 1.4 — Modern Edition";
 $year_to         = date("Y");
 
@@ -35,16 +35,12 @@ $_v->fsize1('<small>');
 <p><b>Skriptin tam təsviri və istifadə qaydaları</b></p>
 
 <div class="author-card">
-  <div style="font-size:11px; opacity:0.85; letter-spacing:1px;">ORIJINAL MÜƏLLIF</div>
-  <div class="name"><?php echo htmlspecialchars($original_author); ?></div>
-  <div class="role">auto 1.4 — Original Edition</div>
-  <hr style="border:0; border-top:1px solid rgba(255,255,255,0.25); margin:14px 0;"/>
-  <div style="font-size:11px; opacity:0.85; letter-spacing:1px;">MODERN EDITION</div>
-  <div class="name"><?php echo htmlspecialchars($modern_author); ?></div>
+  <div style="font-size:11px; opacity:0.85; letter-spacing:1px;">MÜƏLLIF</div>
+  <div class="name"><?php echo htmlspecialchars($author); ?></div>
   <div class="role">GitHub: <?php echo htmlspecialchars($github); ?></div>
 </div>
 
-<p>© <?php echo $year_to; ?> Modernizasiya: <?php echo htmlspecialchars($modern_author); ?>. Orijinal: <?php echo htmlspecialchars($original_author); ?>. Bütün hüquqlar qorunur.</p>
+<p>© <?php echo $year_to; ?> <?php echo htmlspecialchars($author); ?>. Bütün hüquqlar qorunur.</p>
 
 <hr/>
 
@@ -355,8 +351,7 @@ Skript MySQL/MariaDB-də 137-dən çox cədvəldən istifadə edir. Əsas cədv�
 <h2>6. Müəllif Hüquqları və İstifadə Qaydaları</h2>
 
 <p>
-<b>Orijinal müəllif:</b> <?php echo htmlspecialchars($original_author); ?><br/>
-<b>Modern Edition:</b> <?php echo htmlspecialchars($modern_author); ?><br/>
+<b>Müəllif:</b> <?php echo htmlspecialchars($author); ?><br/>
 <b>GitHub:</b> <?php echo htmlspecialchars($github); ?><br/>
 <b>Versiya:</b> <?php echo htmlspecialchars($version); ?><br/>
 <b>İl:</b> 2017 — <?php echo $year_to; ?>

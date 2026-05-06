@@ -4,8 +4,7 @@ Klassik **auto 1.4** Azərbaycan dilli WAP çat skriptinin müasir HTML5 standar
 
 ## Müəlliflər
 
-- **Orijinal:** ChatN!ck (auto 1.4)
-- **Modern Edition:** Goshgar Hasanzadeh ([GitHub](https://github.com/goshgarhasanov))
+- **Müəllif:** Goshgar Hasanzadeh ([GitHub](https://github.com/goshgarhasanov))
 
 ## Repo Strukturu
 

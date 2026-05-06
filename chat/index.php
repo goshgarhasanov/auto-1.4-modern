@@ -238,7 +238,7 @@ if($vcxvcvc0!='x' and $vcxvcvc0!='' and  $dsay!='0' and ($vcxvcvc4=='0' or $vcxv
 
 echo "ScriptName: <u><a href=\"license.php?$ref\">auto 1.4</a></u><br/>\n";
 //echo $divide;
-echo "M&#252;ellif: <b>ChatN!ck</b><br/>\n";
+echo "M&#252;ellif: <b>Goshgar Hasanzadeh</b><br/>\n";
 //echo "<b>&#169; B&#252;t&#252;n H&#252;quqlar Qorunur</b><br/>\n";
 $_v->divide();
 
